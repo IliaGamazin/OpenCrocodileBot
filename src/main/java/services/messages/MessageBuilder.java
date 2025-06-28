@@ -7,6 +7,7 @@ public class MessageBuilder implements Builder{
     private long chatId;
     private String text;
     private ReplyKeyboard markup;
+
     @Override
     public void setChatId(long chatId) {
         this.chatId = chatId;
@@ -22,6 +23,12 @@ public class MessageBuilder implements Builder{
         this.markup = markup;
     }
 
+    @Override
+    public void addButtonRow(String text, String callback) {
+
+    }
+
+    @Override
     public SendMessage build() {
         SendMessage res = new SendMessage();
         res.setChatId(chatId);

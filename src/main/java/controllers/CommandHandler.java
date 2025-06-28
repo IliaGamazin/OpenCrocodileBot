@@ -11,6 +11,7 @@ public class CommandHandler {
     public CommandHandler(SessionHandler sessions, Sender sender) {
         commands = new HashMap<>();
         commands.put("/run@OpenCrocodileBot", new RunController(sessions, sender));
+        commands.put("/language@OpenCrocodileBot", new LanguageController(sessions, sender));
         commands.put("/message", new MessageController(sessions));
     }
 
