@@ -1,13 +1,12 @@
-package controllers;
+package controllers.commands;
 
+import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.randomword.WordProvider;
 import services.randomword.wiktionary.WiktionaryProvider;
 import services.sender.Sender;
 import services.sessions.SessionHandler;
-import utilities.Language;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

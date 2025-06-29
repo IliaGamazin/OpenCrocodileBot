@@ -1,5 +1,9 @@
-package controllers;
+package handlers;
 
+import controllers.Controller;
+import controllers.commands.LanguageController;
+import controllers.commands.MessageController;
+import controllers.commands.RunController;
 import services.sender.Sender;
 import services.sessions.SessionHandler;
 

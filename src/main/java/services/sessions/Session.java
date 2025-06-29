@@ -6,7 +6,6 @@ import utilities.Language;
 public class Session {
     private final long chatId;
     private final Language language;
-    private GameState state;
 
     public Session(long chatId, Language language) {
         this.chatId = chatId;

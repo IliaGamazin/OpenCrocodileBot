@@ -1,4 +1,4 @@
-package router;
+package routers;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

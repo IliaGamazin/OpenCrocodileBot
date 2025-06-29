@@ -1,6 +1,7 @@
-package router;
+package routers;
 
 import controllers.*;
+import handlers.CommandHandler;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class MessageRouter implements Router{

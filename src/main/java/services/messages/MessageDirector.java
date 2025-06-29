@@ -16,15 +16,15 @@ public class MessageDirector {
 
         InlineKeyboardButton enButton = new InlineKeyboardButton();
         enButton.setText("\uD83C\uDDEC\uD83C\uDDE7");
-        enButton.setCallbackData("CallLangEn");
+        enButton.setCallbackData("/language/eng");
 
         InlineKeyboardButton ruButton = new InlineKeyboardButton();
         ruButton.setText("\uD83C\uDDF7\uD83C\uDDFA");
-        ruButton.setCallbackData("CallLangRu");
+        ruButton.setCallbackData("/language/ru");
 
         InlineKeyboardButton uaButton = new InlineKeyboardButton();
         uaButton.setText("\uD83C\uDDFA\uD83C\uDDE6");
-        uaButton.setCallbackData("CallLangUa");
+        uaButton.setCallbackData("/language/ua");
 
         List<InlineKeyboardButton> enRow = new ArrayList<>();
         enRow.add(enButton);

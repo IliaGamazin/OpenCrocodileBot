@@ -1,5 +1,6 @@
-package controllers;
+package controllers.commands;
 
+import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import services.messages.Builder;
@@ -9,7 +10,7 @@ import services.sender.Sender;
 import services.sessions.Session;
 import services.sessions.SessionHandler;
 
-public class LanguageController implements Controller{
+public class LanguageController implements Controller {
     private final SessionHandler sessions;
     private final Sender sender;
 
