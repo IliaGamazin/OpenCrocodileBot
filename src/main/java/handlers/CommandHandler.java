@@ -8,8 +8,9 @@ import services.sender.Sender;
 import services.sessions.SessionHandler;
 
 import java.util.HashMap;
+import java.util.Optional;
 
-public class CommandHandler {
+public class CommandHandler implements Handler{
     private final HashMap<String, Controller> commands;
 
     public CommandHandler(SessionHandler sessions, Sender sender) {
@@ -19,7 +20,7 @@ public class CommandHandler {
         commands.put("/message", new MessageController(sessions));
     }
 
-    public Controller get(String command) {
-        return commands.getOrDefault(command, commands.get("/message"));
+    public Optional<Controller> get(String callback) {
+        return Optional.ofNullable(commands.get(callback));
     }
 }

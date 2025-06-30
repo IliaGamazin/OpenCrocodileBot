@@ -1,6 +1,5 @@
 package services.sessions;
 
-import org.telegram.telegrambots.meta.api.objects.games.Game;
 import utilities.Language;
 
 public class Session {

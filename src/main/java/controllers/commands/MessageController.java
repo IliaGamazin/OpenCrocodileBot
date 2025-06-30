@@ -10,6 +10,7 @@ public class MessageController implements Controller {
     public MessageController(SessionHandler sessions) {
         this.sessions = sessions;
     }
+    
     @Override
     public void handle(Update update) {
         System.out.println("message");
