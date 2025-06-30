@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import routers.CallbackRouter;
 import routers.MessageRouter;
+import services.parsers.Parser;
+import services.parsers.UniversalParser;
 import services.sender.Sender;
 import services.sessions.SessionHandler;
 
@@ -23,8 +25,10 @@ public class CrocodileBot extends TelegramLongPollingBot implements Sender {
         CommandHandler commands = new CommandHandler(sessions, this);
         CallbackHandler callbacks = new CallbackHandler(sessions, this);
 
-        messageRouter = new MessageRouter(commands);
-        callbackRouter = new CallbackRouter(callbacks);
+        Parser parser = new UniversalParser(this.getBotUsername());
+
+        messageRouter = new MessageRouter(commands, parser);
+        callbackRouter = new CallbackRouter(callbacks, parser);
     }
 
     @Override
@@ -39,7 +43,7 @@ public class CrocodileBot extends TelegramLongPollingBot implements Sender {
 
     @Override
     public String getBotUsername() {
-        return "CrocodileBot";
+        return "OpenCrocodileBot";
     }
 
     @Override
