@@ -11,6 +11,7 @@ import java.util.Optional;
 public class CallbackRouter implements Router{
     private final Handler callbacks;
     private final Parser parser;
+
     public CallbackRouter(Handler callbacks, Parser parser) {
         this.callbacks = callbacks;
         this.parser = parser;
@@ -21,6 +22,6 @@ public class CallbackRouter implements Router{
         String input = update.getCallbackQuery().getData();
         ParseResult result = parser.parse(input);
         Optional<Controller> controller = callbacks.get(result.action());
-        controller.ifPresent(value -> value.handle(update));
+        controller.ifPresent(value -> value.handle(update, result.arguments()));
     }
 }

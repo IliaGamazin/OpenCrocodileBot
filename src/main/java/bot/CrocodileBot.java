@@ -3,6 +3,7 @@ package bot;
 import handlers.CallbackHandler;
 import handlers.CommandHandler;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -50,6 +51,16 @@ public class CrocodileBot extends TelegramLongPollingBot implements Sender {
     public void send(SendMessage message) {
         try {
             execute(message);
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void send(AnswerCallbackQuery answer) {
+        try {
+            execute(answer);
         }
         catch (TelegramApiException e) {
             e.printStackTrace();

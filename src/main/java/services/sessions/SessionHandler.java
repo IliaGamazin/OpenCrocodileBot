@@ -3,7 +3,7 @@ package services.sessions;
 import utilities.Language;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 public class SessionHandler {
     private final HashMap<Long, Session> sessions;
@@ -20,17 +20,13 @@ public class SessionHandler {
         return sessions.containsKey(chatId);
     }
 
-    public void removeSession(long chatId) {
-        sessions.remove(chatId);
+    public Optional<Session> getSession(long chatId) {
+        return Optional.ofNullable(sessions.get(chatId));
     }
 
-    public Session getSession(long chatId) {
-        return sessions.get(chatId);
-    }
-
-    public void getAll() {
-        for (Map.Entry<Long, Session> entry : sessions.entrySet()) {
-            System.out.println(entry.getValue().getChatId());
-        }
+    public void changeLanguage(long chatId, Language language) {
+        getSession(chatId).ifPresent(session ->
+                sessions.put(chatId, session.withLanguage(language))
+        );
     }
 }

@@ -9,6 +9,7 @@ import services.parsers.Parser;
 public class MessageRouter implements Router{
     private final Handler commands;
     private final Parser parser;
+
     public MessageRouter(Handler commands, Parser parser) {
         this.commands = commands;
         this.parser = parser;
@@ -20,6 +21,6 @@ public class MessageRouter implements Router{
         Controller controller = commands.get(result.action())
                 .or(() -> commands.get("message"))
                 .orElseThrow();
-        controller.handle(update);
+        controller.handle(update, result.arguments());
     }
 }

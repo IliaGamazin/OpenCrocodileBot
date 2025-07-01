@@ -12,8 +12,7 @@ public class MessageController implements Controller {
     }
     
     @Override
-    public void handle(Update update) {
+    public void handle(Update update, String[] arguments) {
         System.out.println("message");
-        sessions.getAll();
     }
 }

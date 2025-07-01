@@ -21,7 +21,7 @@ public class RunController implements Controller {
     }
 
     @Override
-    public void handle(Update update) {
+    public void handle(Update update, String[] arguments) {
         long chat = update.getMessage().getChatId();
         if (!sessions.exists(chat)) {
             sessions.addSession(chat);
@@ -31,7 +31,7 @@ public class RunController implements Controller {
             System.out.println("Session already exists for " + chat);
         }
 
-        WordProvider provider = new WiktionaryProvider(sessions.getSession(chat).getLanguage());
+        WordProvider provider = new WiktionaryProvider(sessions.getSession(chat).get().getLanguage());
         String word = "";
         try {
              word = provider.getRandomWord();

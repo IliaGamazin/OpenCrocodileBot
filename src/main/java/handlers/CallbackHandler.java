@@ -1,6 +1,7 @@
 package handlers;
 
 import controllers.Controller;
+import controllers.callbacks.LanguageButtonController;
 import services.sender.Sender;
 import services.sessions.SessionHandler;
 
@@ -12,6 +13,7 @@ public class CallbackHandler implements Handler{
 
     public CallbackHandler(SessionHandler sessions, Sender sender) {
         callbacks = new HashMap<>();
+        callbacks.put("language", new LanguageButtonController(sessions, sender));
     }
 
     public Optional<Controller> get(String callback) {

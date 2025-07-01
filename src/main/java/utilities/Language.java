@@ -20,4 +20,13 @@ public enum Language {
     public String getTitle() {
         return title;
     }
+
+    public static Language fromCode(String code) {
+        for (Language language : Language.values()) {
+            if (language.code.equalsIgnoreCase(code)) {
+                return language;
+            }
+        }
+        throw new IllegalArgumentException("Unknown language code: " + code);
+    }
 }

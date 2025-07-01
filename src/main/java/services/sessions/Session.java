@@ -18,4 +18,8 @@ public class Session {
     public Language getLanguage() {
         return language;
     }
+
+    public Session withLanguage(Language language) {
+        return new Session(this.chatId, language);
+    }
 }
