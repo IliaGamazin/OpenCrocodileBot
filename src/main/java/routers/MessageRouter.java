@@ -3,6 +3,7 @@ package routers;
 import controllers.*;
 import handlers.Handler;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.parsers.ParseResult;
 import services.parsers.Parser;
 
@@ -21,6 +22,11 @@ public class MessageRouter implements Router{
         Controller controller = commands.get(result.action())
                 .or(() -> commands.get("message"))
                 .orElseThrow();
-        controller.handle(update, result.arguments());
+        try {
+            controller.handle(update, result.arguments());
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }

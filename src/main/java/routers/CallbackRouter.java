@@ -3,6 +3,7 @@ package routers;
 import controllers.Controller;
 import handlers.Handler;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.parsers.ParseResult;
 import services.parsers.Parser;
 
@@ -22,6 +23,13 @@ public class CallbackRouter implements Router{
         String input = update.getCallbackQuery().getData();
         ParseResult result = parser.parse(input);
         Optional<Controller> controller = callbacks.get(result.action());
-        controller.ifPresent(value -> value.handle(update, result.arguments()));
+        controller.ifPresent(value -> {
+            try {
+                value.handle(update, result.arguments());
+            }
+            catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

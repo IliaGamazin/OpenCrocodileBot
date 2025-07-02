@@ -3,28 +3,25 @@ package bot;
 import handlers.CallbackHandler;
 import handlers.CommandHandler;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import routers.CallbackRouter;
 import routers.MessageRouter;
+import services.client.TelegramClient;
 import services.parsers.Parser;
 import services.parsers.UniversalParser;
-import services.sender.Sender;
 import services.sessions.SessionHandler;
 
 
-public class CrocodileBot extends TelegramLongPollingBot implements Sender {
+public class CrocodileBot extends TelegramLongPollingBot {
     private final MessageRouter messageRouter;
     private final CallbackRouter callbackRouter;
 
-    public CrocodileBot(String token) {
+    public CrocodileBot(String token, TelegramClient client) {
         super(token);
         SessionHandler sessions = new SessionHandler();
 
-        CommandHandler commands = new CommandHandler(sessions, this);
-        CallbackHandler callbacks = new CallbackHandler(sessions, this);
+        CommandHandler commands = new CommandHandler(sessions, client);
+        CallbackHandler callbacks = new CallbackHandler(sessions, client);
 
         Parser parser = new UniversalParser(this.getBotUsername());
 
@@ -45,25 +42,5 @@ public class CrocodileBot extends TelegramLongPollingBot implements Sender {
     @Override
     public String getBotUsername() {
         return "OpenCrocodileBot";
-    }
-
-    @Override
-    public void send(SendMessage message) {
-        try {
-            execute(message);
-        }
-        catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void send(AnswerCallbackQuery answer) {
-        try {
-            execute(answer);
-        }
-        catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
     }
 }
