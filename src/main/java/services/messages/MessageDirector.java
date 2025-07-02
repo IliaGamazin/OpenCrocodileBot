@@ -17,15 +17,15 @@ public class MessageDirector {
 
         InlineKeyboardButton enButton = new InlineKeyboardButton();
         enButton.setText("\uD83C\uDDEC\uD83C\uDDE7");
-        enButton.setCallbackData("language en");
+        enButton.setCallbackData("language-callback en");
 
         InlineKeyboardButton ruButton = new InlineKeyboardButton();
         ruButton.setText("\uD83C\uDDF7\uD83C\uDDFA");
-        ruButton.setCallbackData(" language ru");
+        ruButton.setCallbackData("language-callback ru");
 
         InlineKeyboardButton uaButton = new InlineKeyboardButton();
         uaButton.setText("\uD83C\uDDFA\uD83C\uDDE6");
-        uaButton.setCallbackData("language ua");
+        uaButton.setCallbackData("language-callback ua");
 
         List<InlineKeyboardButton> enRow = new ArrayList<>();
         enRow.add(enButton);
@@ -42,8 +42,12 @@ public class MessageDirector {
         rows.add(uaRow);
 
         markup.setKeyboard(rows);
-
         builder.setReplyMarkup(markup);
+    }
+
+    public void constructWordMessage(Builder builder, Session session) {
+        builder.setChatId(session.getChatId());
+        builder.setText("");
     }
 
     public void constructLanguageChangedMessage(Builder builder, Session session) {

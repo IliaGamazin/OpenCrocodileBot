@@ -1,20 +1,16 @@
 package services.sessions;
 
 public class GameState {
-    private final long guesser;
-    private String word;
+    private final long master;
+    private final String word;
 
     public GameState(long guesser, String word) {
-        this.guesser = guesser;
+        this.master = guesser;
         this.word = word;
     }
 
-    public long getGuesser() {
-        return guesser;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
+    public long getMaster() {
+        return master;
     }
 
     public String getWord() {

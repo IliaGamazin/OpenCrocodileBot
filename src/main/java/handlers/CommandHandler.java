@@ -1,6 +1,7 @@
 package handlers;
 
 import controllers.Controller;
+import controllers.callbacks.LanguageButtonController;
 import controllers.commands.LanguageController;
 import controllers.commands.MessageController;
 import controllers.commands.RunController;
@@ -18,9 +19,10 @@ public class CommandHandler implements Handler{
         commands.put("run", new RunController(sessions, client));
         commands.put("language", new LanguageController(sessions, client));
         commands.put("message", new MessageController(sessions));
+        commands.put("language-callback", new LanguageButtonController(sessions, client));
     }
 
-    public Optional<Controller> get(String callback) {
-        return Optional.ofNullable(commands.get(callback));
+    public Optional<Controller> get(String command) {
+        return Optional.ofNullable(commands.get(command));
     }
 }

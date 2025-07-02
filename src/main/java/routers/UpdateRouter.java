@@ -9,27 +9,27 @@ import services.parsers.Parser;
 
 import java.util.Optional;
 
-public class CallbackRouter implements Router{
-    private final Handler callbacks;
+public class UpdateRouter {
+    private final Handler handler;
     private final Parser parser;
 
-    public CallbackRouter(Handler callbacks, Parser parser) {
-        this.callbacks = callbacks;
+    public UpdateRouter(Handler messageHandler, Parser parser) {
+        this.handler = messageHandler;
         this.parser = parser;
     }
 
-    @Override
     public void route(Update update) {
-        String input = update.getCallbackQuery().getData();
+        String input = update.hasMessage() ? update.getMessage().getText() : update.getCallbackQuery().getData();
         ParseResult result = parser.parse(input);
-        Optional<Controller> controller = callbacks.get(result.action());
-        controller.ifPresent(value -> {
+
+        Optional<Controller> controller = handler.get(result.action()).or(() -> handler.get("message"));
+        if (controller.isPresent()) {
             try {
-                value.handle(update, result.arguments());
+                controller.get().handle(update, result.arguments());
             }
             catch (TelegramApiException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
-        });
+        }
     }
 }
