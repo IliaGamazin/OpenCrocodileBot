@@ -1,32 +1,27 @@
-//package bot.config;
-//
-//import handlers.CommandHandler;
-//import handlers.Handler;
-//import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-//import routers.Router;
-//import services.client.Sender;
-//import services.client.TelegramClient;
-//import services.parsers.Parser;
-//import services.parsers.UniversalParser;
-//import services.sessions.SessionHandler;
-//
-//public class BotConfig {
-//    private final String token;
-//    private final String name;
-//    private final Router messageRouter;
-//    private final Router callbackRouter
-//    private final CommandHandler commands;
-//    private final SessionHandler sessions;
-//    private final Parser parser;
-//    private final TelegramClient executor;
-//
-//    public BotConfig() {
-//        sessions = new SessionHandler();
-//        parser = new UniversalParser("OpenCrocodileBot");
-//        commands = new CommandHandler(sessions, sender);
-//    }
-//
-//    public void wireClient(TelegramLongPollingBot bot) {
-//        sender = s;
-//    }
-//}
+package bot.config;
+
+import handlers.Handler;
+import routers.Router;
+import services.client.TelegramClient;
+import services.parsers.Parser;
+import services.sessions.SessionHandler;
+
+import java.util.Objects;
+
+public record BotConfig (
+        String token,
+        String name,
+        Parser parser,
+        TelegramClient client,
+        SessionHandler sessions,
+        Router router
+) {
+    public BotConfig {
+        Objects.requireNonNull(token, "Token must not be null");
+        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(parser, "Parser must not be null");
+        Objects.requireNonNull(client, "Client must not be null");
+        Objects.requireNonNull(sessions, "Sessions must not be null");
+        Objects.requireNonNull(router, "Router must not be null");
+    }
+}

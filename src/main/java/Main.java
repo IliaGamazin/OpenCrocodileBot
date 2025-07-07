@@ -1,3 +1,4 @@
+import bot.BotFactory;
 import bot.CrocodileBot;
 import bot.config.TelegramBotClient;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -9,10 +10,8 @@ public class Main {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
 
-            TelegramBotClient client = new TelegramBotClient();
-            CrocodileBot bot = new CrocodileBot(System.getenv("TG_BOT_TOKEN"), client);
-
-            client.setBot(bot);
+            BotFactory factory = new BotFactory();
+            CrocodileBot bot = factory.createBot(System.getenv("TG_BOT_TOKEN"), "OpenCrocodileBot");
 
             botsApi.registerBot(bot);
             System.out.println("Started");

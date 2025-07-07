@@ -1,34 +1,24 @@
 package bot;
 
-import handlers.CommandHandler;
+import bot.config.BotConfig;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import routers.UpdateRouter;
-import services.client.TelegramClient;
-import services.parsers.Parser;
-import services.parsers.UniversalParser;
-import services.sessions.SessionHandler;
 
 public class CrocodileBot extends TelegramLongPollingBot {
-    private final UpdateRouter router;
+    private final BotConfig config;
 
-    public CrocodileBot(String token, TelegramClient client) {
-        super(token);
-
-        SessionHandler sessions = new SessionHandler();
-        CommandHandler commands = new CommandHandler(sessions, client);
-
-        Parser parser = new UniversalParser(this.getBotUsername());
-        router = new UpdateRouter(commands, parser);
+    public CrocodileBot(BotConfig config) {
+        super(config.token());
+        this.config = config;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        router.route(update);
+        config.router().route(update);
     }
 
     @Override
     public String getBotUsername() {
-        return "OpenCrocodileBot";
+        return config.name();
     }
 }

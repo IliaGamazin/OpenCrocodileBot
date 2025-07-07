@@ -9,12 +9,12 @@ import services.parsers.Parser;
 
 import java.util.Optional;
 
-public class UpdateRouter {
+public class UpdateRouter implements Router{
     private final Handler handler;
     private final Parser parser;
 
-    public UpdateRouter(Handler messageHandler, Parser parser) {
-        this.handler = messageHandler;
+    public UpdateRouter(Handler handler, Parser parser) {
+        this.handler = handler;
         this.parser = parser;
     }
 

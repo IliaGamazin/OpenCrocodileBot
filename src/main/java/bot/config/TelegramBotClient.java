@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class TelegramBotClient implements TelegramClient {
     private TelegramLongPollingBot bot;
 
+    @Override
     public void setBot(TelegramLongPollingBot bot) {
         this.bot = bot;
     }
