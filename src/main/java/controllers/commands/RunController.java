@@ -1,5 +1,6 @@
 package controllers.commands;
 
+import bot.config.UpdateConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,7 +23,10 @@ public class RunController implements Controller {
     }
 
     @Override
-    public void handle(Update update, String[] arguments) throws TelegramApiException {
+    public void handle(UpdateConfig config) throws TelegramApiException {
+        Update update = config.getUpdate();
+        String[] arguments = config.getArgs();
+
         long chat = update.getMessage().getChatId();
 
         WordProvider provider = new WiktionaryProvider(sessions.getSession(chat).get().getLanguage());

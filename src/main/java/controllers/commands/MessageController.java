@@ -1,7 +1,9 @@
 package controllers.commands;
 
+import bot.config.UpdateConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.sessions.SessionHandler;
 
 public class MessageController implements Controller {
@@ -12,7 +14,7 @@ public class MessageController implements Controller {
     }
     
     @Override
-    public void handle(Update update, String[] arguments) {
+    public void handle(UpdateConfig config) throws TelegramApiException {
         System.out.println("message");
     }
 }

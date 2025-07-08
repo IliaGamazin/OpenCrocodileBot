@@ -1,5 +1,6 @@
 package controllers.callbacks;
 
+import bot.config.UpdateConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -25,7 +26,10 @@ public class LanguageButtonController implements Controller {
     }
 
     @Override
-    public void handle(Update update, String[] arguments) throws TelegramApiException {
+    public void handle(UpdateConfig config) throws TelegramApiException {
+        Update update = config.getUpdate();
+        String[] arguments = config.getArgs();
+
         long chat = update.getCallbackQuery().getMessage().getChatId();
         String query = update.getCallbackQuery().getId();
         String code = arguments[0];

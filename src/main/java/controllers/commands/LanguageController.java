@@ -1,5 +1,6 @@
 package controllers.commands;
 
+import bot.config.UpdateConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,7 +24,9 @@ public class LanguageController implements Controller {
     }
 
     @Override
-    public void handle(Update update, String[] arguments) throws TelegramApiException {
+    public void handle(UpdateConfig config) throws TelegramApiException {
+        Update update = config.getUpdate();
+
         MessageDirector director = new MessageDirector();
         Builder builder = new MessageBuilder();
         long chat = update.getMessage().getChatId();

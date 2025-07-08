@@ -1,5 +1,6 @@
 package middleware;
 
+import bot.config.UpdateConfig;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.sessions.SessionHandler;
@@ -14,7 +15,9 @@ public class SessionMiddleware implements Middleware{
     }
 
     @Override
-    public void handle(Update update, Consumer<Update> next) {
+    public void handle(UpdateConfig config, Consumer<UpdateConfig> next) {
+        Update update = config.getUpdate();
+
         long chat = update.hasMessage() ?
                 update.getMessage().getChatId() :
                 update.getCallbackQuery().getMessage().getChatId();
@@ -22,6 +25,6 @@ public class SessionMiddleware implements Middleware{
             sessions.addSession(chat);
         }
 
-        next.accept(update);
+        next.accept(config);
     }
 }

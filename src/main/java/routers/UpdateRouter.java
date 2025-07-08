@@ -1,5 +1,6 @@
 package routers;
 
+import bot.config.UpdateConfig;
 import controllers.Controller;
 import handlers.Handler;
 import middleware.Middleware;
@@ -32,11 +33,27 @@ public class UpdateRouter implements Router{
             return;
         }
 
-        Consumer<Update> chain = u -> {};
+        UpdateConfig config = new UpdateConfig(update, result.arguments());
+
+        Controller controller = controllerOpt.get();
+        Consumer<UpdateConfig> chain = getChain(controller);
+
+        chain.accept(config);
+    }
+
+    private Consumer<UpdateConfig> getChain(Controller controller) {
+        Consumer<UpdateConfig> chain = cnf -> {
+            try {
+                controller.handle(cnf);
+            }
+            catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        };
 
         for (int i = middlewares.size() - 1; i >= 0; i--) {
             final Middleware middleware = middlewares.get(i);
-            final Consumer<Update> next = chain;
+            final Consumer<UpdateConfig> next = chain;
 
             chain = u -> {
                 try {
@@ -47,14 +64,6 @@ public class UpdateRouter implements Router{
                 }
             };
         }
-
-        chain.accept(update);
-        Controller controller = controllerOpt.get();
-        try {
-            controller.handle(update, result.arguments());
-        }
-        catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        return chain;
     }
 }
