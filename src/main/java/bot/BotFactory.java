@@ -1,7 +1,10 @@
 package bot;
 
 import bot.config.BotConfig;
-import bot.config.TelegramBotClient;
+import middleware.LoggerMiddleware;
+import middleware.Middleware;
+import middleware.SessionMiddleware;
+import services.client.TelegramBotClient;
 import handlers.CommandHandler;
 import handlers.Handler;
 import routers.Router;
@@ -11,7 +14,8 @@ import services.parsers.Parser;
 import services.parsers.UniversalParser;
 import services.sessions.SessionHandler;
 
-import java.sql.Struct;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BotFactory {
     public BotFactory() {}
@@ -22,7 +26,12 @@ public class BotFactory {
 
         Parser parser = new UniversalParser(name);
         Handler handler = new CommandHandler(sessions, client);
-        Router router = new UpdateRouter(handler, parser);
+        List<Middleware> middlewares = new ArrayList<>();
+
+        middlewares.add(new SessionMiddleware(sessions));
+        middlewares.add(new LoggerMiddleware());
+
+        Router router = new UpdateRouter(handler, parser, middlewares);
 
         BotConfig config = new BotConfig(
                 token,

@@ -1,9 +1,8 @@
-package bot.config;
+package services.client;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.client.TelegramClient;
 
 import java.io.Serializable;
 

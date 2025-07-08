@@ -1,6 +1,5 @@
 package bot.config;
 
-import handlers.Handler;
 import routers.Router;
 import services.client.TelegramClient;
 import services.parsers.Parser;

@@ -41,8 +41,8 @@ public class LanguageButtonController implements Controller {
 
         MessageDirector director = new MessageDirector();
         Builder builder = new MessageBuilder();
-        Optional<Session> session = sessions.getSession(chat);
 
+        Optional<Session> session = sessions.getSession(chat);
         if (session.isPresent()) {
             director.constructLanguageChangedMessage(builder, session.get());
             SendMessage message = builder.build();

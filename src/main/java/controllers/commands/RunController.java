@@ -24,13 +24,6 @@ public class RunController implements Controller {
     @Override
     public void handle(Update update, String[] arguments) throws TelegramApiException {
         long chat = update.getMessage().getChatId();
-        if (!sessions.exists(chat)) {
-            sessions.addSession(chat);
-            System.out.println("Session created for " + chat);
-        }
-        else {
-            System.out.println("Session already exists for " + chat);
-        }
 
         WordProvider provider = new WiktionaryProvider(sessions.getSession(chat).get().getLanguage());
         String word = "";
