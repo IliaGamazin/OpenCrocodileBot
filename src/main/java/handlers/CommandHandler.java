@@ -6,6 +6,7 @@ import controllers.commands.LanguageController;
 import controllers.commands.MessageController;
 import controllers.commands.RunController;
 import services.client.TelegramClient;
+import services.game.GameHandler;
 import services.sessions.SessionHandler;
 
 import java.util.HashMap;
@@ -14,10 +15,10 @@ import java.util.Optional;
 public class CommandHandler implements Handler{
     private final HashMap<String, Controller> commands;
 
-    public CommandHandler(SessionHandler sessions, TelegramClient client) {
+    public CommandHandler(SessionHandler sessions, GameHandler games, TelegramClient client) {
         commands = new HashMap<>();
-        commands.put("run", new RunController(sessions, client));
-        commands.put("language", new LanguageController(sessions, client));
+        commands.put("run", new RunController(games, client));
+        commands.put("language", new LanguageController(client));
         commands.put("message", new MessageController(sessions));
         commands.put("language-callback", new LanguageButtonController(sessions, client));
     }

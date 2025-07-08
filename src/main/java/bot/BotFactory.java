@@ -10,8 +10,11 @@ import handlers.Handler;
 import routers.Router;
 import routers.UpdateRouter;
 import services.client.TelegramClient;
+import services.game.GameHandler;
 import services.parsers.Parser;
 import services.parsers.UniversalParser;
+import services.randomword.WordProvider;
+import services.randomword.wiktionary.WiktionaryProvider;
 import services.sessions.SessionHandler;
 
 import java.util.ArrayList;
@@ -22,12 +25,15 @@ public class BotFactory {
 
     public CrocodileBot createBot(String token, String name) {
         TelegramClient client = new TelegramBotClient();
+        WordProvider provider = new WiktionaryProvider();
+
         SessionHandler sessions = new SessionHandler();
+        GameHandler games = new GameHandler(provider);
+
+        Handler handler = new CommandHandler(sessions, games, client);
 
         Parser parser = new UniversalParser(name);
-        Handler handler = new CommandHandler(sessions, client);
         List<Middleware> middlewares = new ArrayList<>();
-
         middlewares.add(new SessionMiddleware(sessions));
         middlewares.add(new LoggerMiddleware());
 

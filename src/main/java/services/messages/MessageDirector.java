@@ -3,14 +3,13 @@ package services.messages;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import services.sessions.Session;
-import utilities.Language;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageDirector {
     public void constructLanguageMessage(Builder builder, Session session) {
-        builder.setChatId(session.getChatId());
+        builder.setChatId(session.chat());
         builder.setText("Choose the language");
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -46,12 +45,12 @@ public class MessageDirector {
     }
 
     public void constructWordMessage(Builder builder, Session session) {
-        builder.setChatId(session.getChatId());
+        builder.setChatId(session.chat());
         builder.setText("");
     }
 
     public void constructLanguageChangedMessage(Builder builder, Session session) {
-        builder.setChatId(session.getChatId());
-        builder.setText("Language changed to " + session.getLanguage().getTitle());
+        builder.setChatId(session.chat());
+        builder.setText("Language changed to " + session.language().getTitle());
     }
 }

@@ -27,8 +27,8 @@ public class LanguageButtonController implements Controller {
 
     @Override
     public void handle(UpdateConfig config) throws TelegramApiException {
-        Update update = config.getUpdate();
-        String[] arguments = config.getArgs();
+        Update update = config.update();
+        String[] arguments = config.args();
 
         long chat = update.getCallbackQuery().getMessage().getChatId();
         String query = update.getCallbackQuery().getId();

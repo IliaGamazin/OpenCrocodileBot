@@ -1,7 +1,6 @@
 package services.sessions;
 
 import utilities.Language;
-
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -12,8 +11,10 @@ public class SessionHandler {
         sessions = new HashMap<>();
     }
 
-    public void addSession(long chatId) {
-        sessions.put(chatId, new Session(chatId, Language.ENGLISH));
+    public Session getOrCreate(long chatId) {
+        Session session = exists(chatId) ? sessions.get(chatId) : new Session(chatId, Language.ENGLISH);
+        sessions.put(chatId, session);
+        return session;
     }
 
     public boolean exists(long chatId) {

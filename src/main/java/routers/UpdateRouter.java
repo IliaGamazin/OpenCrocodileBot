@@ -33,7 +33,7 @@ public class UpdateRouter implements Router{
             return;
         }
 
-        UpdateConfig config = new UpdateConfig(update, result.arguments());
+        UpdateConfig config = new UpdateConfig(update, result.arguments(), null);
 
         Controller controller = controllerOpt.get();
         Consumer<UpdateConfig> chain = getChain(controller);

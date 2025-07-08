@@ -15,27 +15,19 @@ import services.sessions.SessionHandler;
 import java.util.Optional;
 
 public class LanguageController implements Controller {
-    private final SessionHandler sessions;
     private final TelegramClient client;
 
-    public LanguageController(SessionHandler sessions, TelegramClient client) {
-        this.sessions = sessions;
+    public LanguageController(TelegramClient client) {
         this.client = client;
     }
 
     @Override
     public void handle(UpdateConfig config) throws TelegramApiException {
-        Update update = config.getUpdate();
-
         MessageDirector director = new MessageDirector();
         Builder builder = new MessageBuilder();
-        long chat = update.getMessage().getChatId();
 
-        Optional<Session> session = sessions.getSession(chat);
-        if (session.isPresent()) {
-            director.constructLanguageMessage(builder, session.get());
-            SendMessage message = builder.build();
-            client.execute(message);
-        }
+        director.constructLanguageMessage(builder, config.session());
+        SendMessage message = builder.build();
+        client.execute(message);
     }
 }

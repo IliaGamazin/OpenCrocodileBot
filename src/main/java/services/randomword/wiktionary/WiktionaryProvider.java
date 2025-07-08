@@ -10,21 +10,11 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 
 public class WiktionaryProvider implements WordProvider {
-    private final Language language;
-
-    public WiktionaryProvider(Language language) {
-        this.language = language;
-    }
-
-    String getLanguageTitle() {
-        return language.getTitle();
-    }
-
     @Override
-    public String getRandomWord() throws IOException, URISyntaxException {
+    public String getRandomWord(Language language) throws IOException, URISyntaxException {
         String currentUrl = String.format(
                 "https://en.wiktionary.org/wiki/Special:RandomInCategory/%s_lemmas",
-                getLanguageTitle()
+                language.getTitle()
         );
         URI uri = new URI(currentUrl);
 

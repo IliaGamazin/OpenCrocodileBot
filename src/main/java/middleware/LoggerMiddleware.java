@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 public class LoggerMiddleware implements Middleware{
     @Override
     public void handle(UpdateConfig config, Consumer<UpdateConfig> next) throws TelegramApiException {
-        Update update = config.getUpdate();
+        Update update = config.update();
 
         long chat = update.hasMessage() ?
                 update.getMessage().getChatId() :
