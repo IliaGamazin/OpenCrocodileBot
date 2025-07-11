@@ -1,15 +1,14 @@
 package middleware;
 
-import bot.config.UpdateConfig;
+import bot.config.UnAuthedUpdate;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.function.Consumer;
 
-public class LoggerMiddleware implements Middleware{
+public class LoggerMiddleware implements Middleware<UnAuthedUpdate>{
     @Override
-    public void handle(UpdateConfig config, Consumer<UpdateConfig> next) throws TelegramApiException {
+    public void handle(UnAuthedUpdate config, Consumer<UnAuthedUpdate> next) {
         Update update = config.update();
 
         long chat = update.hasMessage() ?

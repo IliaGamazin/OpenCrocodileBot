@@ -7,6 +7,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.Serializable;
 
 public interface TelegramClient {
-    public void setBot(TelegramLongPollingBot bot);
+    void setBot(TelegramLongPollingBot bot);
     <T extends Serializable> void execute(BotApiMethod<T> method) throws TelegramApiException;
 }

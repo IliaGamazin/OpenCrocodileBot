@@ -1,5 +1,7 @@
 package services.parsers;
 
+import org.telegram.telegrambots.meta.api.objects.Update;
+
 import java.util.Arrays;
 
 public class UniversalParser implements Parser{
@@ -9,10 +11,16 @@ public class UniversalParser implements Parser{
     }
 
     @Override
-    public ParseResult parse(String input) {
+    public ParseResult parse(Update update) {
+        String input = update.hasMessage() ? update.getMessage().getText() :
+                update.getCallbackQuery().getData();
+        long chat = update.hasMessage() ? update.getMessage().getChatId() :
+                update.getCallbackQuery().getMessage().getChatId();
+
         if (input == null || input.trim().isEmpty()) {
-            return new ParseResult("", new String[0]);
+            return new ParseResult(chat, "", new String[0]);
         }
+
         String cleaned = input.replaceFirst("^/", "")
                 .replace("@" + name, "")
                 .trim();
@@ -22,6 +30,6 @@ public class UniversalParser implements Parser{
                 Arrays.copyOfRange(parts, 1, parts.length) :
                 new String[0];
 
-        return new ParseResult(action, args);
+        return new ParseResult(chat, action, args);
     }
 }

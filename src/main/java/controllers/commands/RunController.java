@@ -1,6 +1,6 @@
 package controllers.commands;
 
-import bot.config.UpdateConfig;
+import bot.config.UnAuthedUpdate;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,12 +8,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.client.TelegramClient;
 import services.game.GameHandler;
 import services.game.GameState;
-import services.sessions.Session;
-import services.sessions.SessionHandler;
+import services.messages.Builder;
+import services.messages.MessageBuilder;
+import services.messages.MessageDirector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Optional;
 
 public class RunController implements Controller {
     private final GameHandler games;
@@ -25,17 +25,18 @@ public class RunController implements Controller {
     }
 
     @Override
-    public void handle(UpdateConfig config) throws TelegramApiException {
+    public void handle(UnAuthedUpdate config) throws TelegramApiException {
         Update update = config.update();
-        long chat = update.getMessage().getChatId();
+        long chat = config.chat();
         long master = update.getMessage().getFrom().getId();
+
+        MessageDirector director = new MessageDirector();
+        Builder builder = new MessageBuilder();
 
         try {
             GameState game = games.start(chat, master, config.session().language());
-            String word = game.word().replace("_", " ");
-            SendMessage message = new SendMessage();
-            message.setText(word);
-            message.setChatId(chat);
+            director.constructWordMessage(builder, config.session(), game);
+            SendMessage message = builder.build();
             client.execute(message);
         }
         catch (IOException | URISyntaxException e) {

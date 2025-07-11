@@ -1,3 +1,3 @@
 package services.parsers;
 
-public record ParseResult(String action, String[] arguments) { }
+public record ParseResult(long chat, String action, String[] arguments) { }

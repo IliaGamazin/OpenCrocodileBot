@@ -1,12 +1,13 @@
 package controllers.callbacks;
 
-import bot.config.UpdateConfig;
+import bot.config.UnAuthedUpdate;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.client.TelegramClient;
+import services.messages.AnswerDirector;
 import services.messages.Builder;
 import services.messages.MessageBuilder;
 import services.messages.MessageDirector;
@@ -26,29 +27,25 @@ public class LanguageButtonController implements Controller {
     }
 
     @Override
-    public void handle(UpdateConfig config) throws TelegramApiException {
+    public void handle(UnAuthedUpdate config) throws TelegramApiException {
         Update update = config.update();
-        String[] arguments = config.args();
+        long chat = config.chat();
 
-        long chat = update.getCallbackQuery().getMessage().getChatId();
         String query = update.getCallbackQuery().getId();
-        String code = arguments[0];
+        String code = config.args()[0];
 
         sessions.changeLanguage(chat, Language.fromCode(code));
-        AnswerCallbackQuery answer = AnswerCallbackQuery.builder()
-                .callbackQueryId(query)
-                .text("Settings changed successfully")
-                .showAlert(false)
-                .build();
 
+        AnswerDirector answerDirector = new AnswerDirector();
+        AnswerCallbackQuery answer = answerDirector.constructSettingChanged(query);
         client.execute(answer);
 
-        MessageDirector director = new MessageDirector();
+        MessageDirector messageDirector = new MessageDirector();
         Builder builder = new MessageBuilder();
 
         Optional<Session> session = sessions.getSession(chat);
         if (session.isPresent()) {
-            director.constructLanguageChangedMessage(builder, session.get());
+            messageDirector.constructLanguageChangedMessage(builder, session.get());
             SendMessage message = builder.build();
             client.execute(message);
         }

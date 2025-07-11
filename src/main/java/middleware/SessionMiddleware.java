@@ -1,13 +1,13 @@
 package middleware;
 
-import bot.config.UpdateConfig;
+import bot.config.UnAuthedUpdate;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import services.sessions.Session;
 import services.sessions.SessionHandler;
 
 import java.util.function.Consumer;
 
-public class SessionMiddleware implements Middleware{
+public class SessionMiddleware implements Middleware<UnAuthedUpdate>{
     private final SessionHandler sessions;
 
     public SessionMiddleware(SessionHandler sessions) {
@@ -15,7 +15,7 @@ public class SessionMiddleware implements Middleware{
     }
 
     @Override
-    public void handle(UpdateConfig config, Consumer<UpdateConfig> next) {
+    public void handle(UnAuthedUpdate config, Consumer<UnAuthedUpdate> next) {
         Update update = config.update();
 
         long chat = update.hasMessage() ?

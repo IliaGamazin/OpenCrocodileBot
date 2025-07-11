@@ -1,6 +1,6 @@
 package routers;
 
-import bot.config.UpdateConfig;
+import bot.config.UnAuthedUpdate;
 import controllers.Controller;
 import handlers.Handler;
 import middleware.Middleware;
@@ -25,24 +25,24 @@ public class UpdateRouter implements Router{
     }
 
     public void route(Update update) {
-        String input = update.hasMessage() ? update.getMessage().getText() : update.getCallbackQuery().getData();
-        ParseResult result = parser.parse(input);
+        ParseResult result = parser.parse(update);
 
-        Optional<Controller> controllerOpt = handler.get(result.action()).or(() -> handler.get("message"));
+        Optional<Controller> controllerOpt = handler.get(result.action()).or(
+                () -> update.hasMessage() ? handler.get("message") : Optional.empty());
         if (controllerOpt.isEmpty()) {
             return;
         }
 
-        UpdateConfig config = new UpdateConfig(update, result.arguments(), null);
+        UnAuthedUpdate config = new UnAuthedUpdate(result.chat(), update, result.arguments(), null);
 
         Controller controller = controllerOpt.get();
-        Consumer<UpdateConfig> chain = getChain(controller);
+        Consumer<UnAuthedUpdate> chain = getChain(controller);
 
         chain.accept(config);
     }
 
-    private Consumer<UpdateConfig> getChain(Controller controller) {
-        Consumer<UpdateConfig> chain = cnf -> {
+    private Consumer<UnAuthedUpdate> getChain(Controller controller) {
+        Consumer<UnAuthedUpdate> chain = cnf -> {
             try {
                 controller.handle(cnf);
             }
@@ -53,7 +53,7 @@ public class UpdateRouter implements Router{
 
         for (int i = middlewares.size() - 1; i >= 0; i--) {
             final Middleware middleware = middlewares.get(i);
-            final Consumer<UpdateConfig> next = chain;
+            final Consumer<UnAuthedUpdate> next = chain;
 
             chain = u -> {
                 try {

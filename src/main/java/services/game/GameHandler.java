@@ -5,6 +5,7 @@ import utilities.Language;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameHandler {
@@ -21,5 +22,9 @@ public class GameHandler {
         GameState game = new GameState(chat, master, word);
         games.put(chat, game);
         return game;
+    }
+
+    public Optional<GameState> get(long chat) {
+        return Optional.ofNullable(games.get(chat));
     }
 }

@@ -2,6 +2,7 @@ package services.messages;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import services.game.GameState;
 import services.sessions.Session;
 
 import java.util.ArrayList;
@@ -44,9 +45,31 @@ public class MessageDirector {
         builder.setReplyMarkup(markup);
     }
 
-    public void constructWordMessage(Builder builder, Session session) {
+    public void constructWordMessage(Builder builder, Session session, GameState game) {
         builder.setChatId(session.chat());
-        builder.setText("");
+        builder.setText(game.master() + " explains the word");
+
+        InlineKeyboardButton seeButton = new InlineKeyboardButton();
+        seeButton.setText("\uD83D\uDD0D See word");
+        seeButton.setCallbackData("see-callback");
+
+        InlineKeyboardButton nextButton = new InlineKeyboardButton();
+        nextButton.setText("Next word ⏩");
+        nextButton.setCallbackData("next-callback");
+
+        List<InlineKeyboardButton> seeRow = new ArrayList<>();
+        seeRow.add(seeButton);
+
+        List<InlineKeyboardButton> nextRow = new ArrayList<>();
+        nextRow.add(nextButton);
+
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        rows.add(seeRow);
+        rows.add(nextRow);
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        markup.setKeyboard(rows);
+        builder.setReplyMarkup(markup);
     }
 
     public void constructLanguageChangedMessage(Builder builder, Session session) {
