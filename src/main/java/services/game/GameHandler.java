@@ -24,6 +24,22 @@ public class GameHandler {
         return game;
     }
 
+    public Optional<GameState> nextWord(long chat, Language language) throws IOException, URISyntaxException {
+        GameState current = games.get(chat);
+        if (current == null) {
+            return Optional.empty();
+        }
+
+        String newWord = provider.getRandomWord(language);
+        GameState updated = current.withWord(newWord);
+        games.put(chat, updated);
+        return Optional.of(updated);
+    }
+
+    public void end(long chat) {
+        games.remove(chat);
+    }
+
     public Optional<GameState> get(long chat) {
         return Optional.ofNullable(games.get(chat));
     }

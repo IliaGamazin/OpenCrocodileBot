@@ -2,6 +2,7 @@ package handlers;
 
 import controllers.Controller;
 import controllers.callbacks.LanguageButtonController;
+import controllers.callbacks.NextButtonController;
 import controllers.callbacks.SeeButtonController;
 import controllers.commands.LanguageController;
 import controllers.commands.MessageController;
@@ -23,6 +24,7 @@ public class CommandHandler implements Handler{
         commands.put("message", new MessageController());
         commands.put("language-callback", new LanguageButtonController(sessions, client));
         commands.put("see-callback", new SeeButtonController(client, games));
+        commands.put("next-callback", new NextButtonController(client, games));
     }
 
     public Optional<Controller> get(String command) {

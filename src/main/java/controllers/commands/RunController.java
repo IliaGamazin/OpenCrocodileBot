@@ -1,6 +1,6 @@
 package controllers.commands;
 
-import bot.config.UnAuthedUpdate;
+import bot.config.AuthedConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -25,7 +25,7 @@ public class RunController implements Controller {
     }
 
     @Override
-    public void handle(UnAuthedUpdate config) throws TelegramApiException {
+    public void handle(AuthedConfig config) throws TelegramApiException {
         Update update = config.update();
         long chat = config.chat();
         long master = update.getMessage().getFrom().getId();

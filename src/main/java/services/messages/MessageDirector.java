@@ -72,6 +72,11 @@ public class MessageDirector {
         builder.setReplyMarkup(markup);
     }
 
+//    public void constructWinMessage(Builder builder, Session session, ) {
+//        builder.setChatId(session.chat());
+//        builder.setText(session.);
+//    }
+
     public void constructLanguageChangedMessage(Builder builder, Session session) {
         builder.setChatId(session.chat());
         builder.setText("Language changed to " + session.language().getTitle());

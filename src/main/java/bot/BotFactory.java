@@ -1,9 +1,9 @@
 package bot;
 
+import bot.config.AuthedConfig;
 import bot.config.BotConfig;
-import middleware.LoggerMiddleware;
-import middleware.Middleware;
-import middleware.SessionMiddleware;
+import bot.config.UnAuthedConfig;
+import middleware.*;
 import services.client.TelegramBotClient;
 import handlers.CommandHandler;
 import handlers.Handler;
@@ -31,13 +31,19 @@ public class BotFactory {
         GameHandler games = new GameHandler(provider);
 
         Handler handler = new CommandHandler(sessions, games, client);
-
         Parser parser = new UniversalParser(name);
-        List<Middleware> middlewares = new ArrayList<>();
-        middlewares.add(new SessionMiddleware(sessions));
-        middlewares.add(new LoggerMiddleware());
 
-        Router router = new UpdateRouter(handler, parser, middlewares);
+        List<Middleware<UnAuthedConfig>> preAuthMiddlewares = new ArrayList<>();
+        List<Middleware<AuthedConfig>> postAuthMiddlewares = new ArrayList<>();
+        preAuthMiddlewares.add(new LoggerMiddleware());
+
+        MiddlewareChain<UnAuthedConfig> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
+        MiddlewareChain<AuthedConfig> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
+
+        AuthBridge bridge = new SessionMiddleware(sessions);
+
+        Pipeline pipeline = new Pipeline(preAuthChain, postAuthChain, bridge);
+        Router router = new UpdateRouter(handler, parser, pipeline);
 
         BotConfig config = new BotConfig(
                 token,

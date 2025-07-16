@@ -1,13 +1,14 @@
 package middleware;
 
-import bot.config.UnAuthedUpdate;
+import bot.config.UnAuthedConfig;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.sessions.Session;
 import services.sessions.SessionHandler;
 
 import java.util.function.Consumer;
 
-public class SessionMiddleware implements Middleware<UnAuthedUpdate>{
+public class SessionMiddleware implements AuthBridge{
     private final SessionHandler sessions;
 
     public SessionMiddleware(SessionHandler sessions) {
@@ -15,15 +16,11 @@ public class SessionMiddleware implements Middleware<UnAuthedUpdate>{
     }
 
     @Override
-    public void handle(UnAuthedUpdate config, Consumer<UnAuthedUpdate> next) {
+    public Session authenticate(UnAuthedConfig config) throws TelegramApiException {
         Update update = config.update();
-
         long chat = update.hasMessage() ?
                 update.getMessage().getChatId() :
                 update.getCallbackQuery().getMessage().getChatId();
-        Session session = sessions.getOrCreate(chat);
-
-        config = config.withSession(session);
-        next.accept(config);
+        return sessions.getOrCreate(chat);
     }
 }

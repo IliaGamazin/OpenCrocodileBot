@@ -1,6 +1,6 @@
 package controllers.commands;
 
-import bot.config.UnAuthedUpdate;
+import bot.config.AuthedConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -17,7 +17,7 @@ public class LanguageController implements Controller {
     }
 
     @Override
-    public void handle(UnAuthedUpdate config) throws TelegramApiException {
+    public void handle(AuthedConfig config) throws TelegramApiException {
         MessageDirector director = new MessageDirector();
         Builder builder = new MessageBuilder();
 

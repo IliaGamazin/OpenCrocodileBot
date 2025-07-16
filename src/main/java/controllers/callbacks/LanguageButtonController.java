@@ -1,6 +1,6 @@
 package controllers.callbacks;
 
-import bot.config.UnAuthedUpdate;
+import bot.config.AuthedConfig;
 import controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -27,7 +27,7 @@ public class LanguageButtonController implements Controller {
     }
 
     @Override
-    public void handle(UnAuthedUpdate config) throws TelegramApiException {
+    public void handle(AuthedConfig config) throws TelegramApiException {
         Update update = config.update();
         long chat = config.chat();
 

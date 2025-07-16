@@ -1,8 +1,8 @@
 package controllers;
 
-import bot.config.UnAuthedUpdate;
+import bot.config.AuthedConfig;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public interface Controller {
-    void handle(UnAuthedUpdate config) throws TelegramApiException;
+    void handle(AuthedConfig config) throws TelegramApiException;
 }
