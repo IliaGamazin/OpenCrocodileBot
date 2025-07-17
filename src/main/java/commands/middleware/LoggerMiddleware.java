@@ -1,4 +1,4 @@
-package middleware;
+package commands.middleware;
 
 import bot.config.UnAuthedConfig;
 import org.telegram.telegrambots.meta.api.objects.Update;

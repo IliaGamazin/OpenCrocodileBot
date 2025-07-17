@@ -1,4 +1,4 @@
-package controllers;
+package commands.controllers;
 
 import bot.config.AuthedConfig;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;

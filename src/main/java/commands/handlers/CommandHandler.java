@@ -1,15 +1,15 @@
-package handlers;
+package commands.handlers;
 
-import controllers.Controller;
-import controllers.callbacks.LanguageButtonController;
-import controllers.callbacks.NextButtonController;
-import controllers.callbacks.SeeButtonController;
-import controllers.commands.LanguageController;
-import controllers.commands.MessageController;
-import controllers.commands.RunController;
-import services.client.TelegramClient;
-import services.game.GameHandler;
-import services.sessions.SessionHandler;
+import commands.controllers.Controller;
+import commands.controllers.callbacks.LanguageButtonController;
+import commands.controllers.callbacks.NextButtonController;
+import commands.controllers.callbacks.SeeButtonController;
+import commands.controllers.commands.LanguageController;
+import commands.controllers.commands.MessageController;
+import commands.controllers.commands.RunController;
+import authentication.client.TelegramClient;
+import game.GameHandler;
+import authentication.sessions.SessionHandler;
 
 import java.util.HashMap;
 import java.util.Optional;

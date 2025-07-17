@@ -1,4 +1,4 @@
-package services.sessions;
+package authentication.sessions;
 
 import utilities.Language;
 import java.util.HashMap;

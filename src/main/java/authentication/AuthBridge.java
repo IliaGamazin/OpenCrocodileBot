@@ -1,8 +1,8 @@
-package middleware;
+package authentication;
 
+import authentication.sessions.Session;
 import bot.config.UnAuthedConfig;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.sessions.Session;
 
 @FunctionalInterface
 public interface AuthBridge {

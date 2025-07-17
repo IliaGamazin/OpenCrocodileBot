@@ -1,4 +1,4 @@
-package services.game;
+package game;
 
 public record GameState(
         long chat,

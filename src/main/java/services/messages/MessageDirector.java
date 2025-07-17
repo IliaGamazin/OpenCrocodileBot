@@ -2,8 +2,8 @@ package services.messages;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import services.game.GameState;
-import services.sessions.Session;
+import game.GameState;
+import authentication.sessions.Session;
 
 import java.util.ArrayList;
 import java.util.List;

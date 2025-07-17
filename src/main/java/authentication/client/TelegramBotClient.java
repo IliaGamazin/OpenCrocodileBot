@@ -1,4 +1,4 @@
-package services.client;
+package authentication.client;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

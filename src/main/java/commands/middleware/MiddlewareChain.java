@@ -1,4 +1,4 @@
-package middleware;
+package commands.middleware;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 

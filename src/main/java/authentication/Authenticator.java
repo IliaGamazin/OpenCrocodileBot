@@ -1,17 +1,15 @@
-package middleware;
+package authentication;
 
+import authentication.sessions.Session;
 import bot.config.UnAuthedConfig;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.sessions.Session;
-import services.sessions.SessionHandler;
+import authentication.sessions.SessionHandler;
 
-import java.util.function.Consumer;
-
-public class SessionMiddleware implements AuthBridge{
+public class Authenticator implements AuthBridge{
     private final SessionHandler sessions;
 
-    public SessionMiddleware(SessionHandler sessions) {
+    public Authenticator(SessionHandler sessions) {
         this.sessions = sessions;
     }
 

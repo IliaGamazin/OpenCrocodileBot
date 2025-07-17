@@ -1,10 +1,11 @@
-package middleware;
+package commands.middleware;
 
+import authentication.AuthBridge;
+import authentication.sessions.Session;
 import bot.config.AuthedConfig;
 import bot.config.UnAuthedConfig;
-import controllers.Controller;
+import commands.controllers.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.sessions.Session;
 
 public class Pipeline {
     private final MiddlewareChain<UnAuthedConfig> preAuthChain;

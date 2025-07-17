@@ -1,7 +1,7 @@
 package bot.config;
 
+import authentication.sessions.Session;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import services.sessions.Session;
 
 public record AuthedConfig(
         String action,

@@ -1,21 +1,23 @@
 package bot;
 
+import authentication.AuthBridge;
+import authentication.Authenticator;
 import bot.config.AuthedConfig;
 import bot.config.BotConfig;
 import bot.config.UnAuthedConfig;
-import middleware.*;
-import services.client.TelegramBotClient;
-import handlers.CommandHandler;
-import handlers.Handler;
+import commands.middleware.*;
+import authentication.client.TelegramBotClient;
+import commands.handlers.CommandHandler;
+import commands.handlers.Handler;
 import routers.Router;
 import routers.UpdateRouter;
-import services.client.TelegramClient;
-import services.game.GameHandler;
+import authentication.client.TelegramClient;
+import game.GameHandler;
 import services.parsers.Parser;
 import services.parsers.UniversalParser;
 import services.randomword.WordProvider;
 import services.randomword.wiktionary.WiktionaryProvider;
-import services.sessions.SessionHandler;
+import authentication.sessions.SessionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class BotFactory {
         MiddlewareChain<UnAuthedConfig> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
         MiddlewareChain<AuthedConfig> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
 
-        AuthBridge bridge = new SessionMiddleware(sessions);
+        AuthBridge bridge = new Authenticator(sessions);
 
         Pipeline pipeline = new Pipeline(preAuthChain, postAuthChain, bridge);
         Router router = new UpdateRouter(handler, parser, pipeline);

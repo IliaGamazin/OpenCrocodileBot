@@ -1,9 +1,9 @@
 package routers;
 
 import bot.config.UnAuthedConfig;
-import controllers.Controller;
-import handlers.Handler;
-import middleware.Pipeline;
+import commands.controllers.Controller;
+import commands.handlers.Handler;
+import commands.middleware.Pipeline;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import services.parsers.ParseResult;
 import services.parsers.Parser;

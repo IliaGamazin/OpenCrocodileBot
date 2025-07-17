@@ -1,6 +1,6 @@
-package handlers;
+package commands.handlers;
 
-import controllers.Controller;
+import commands.controllers.Controller;
 
 import java.util.Optional;
 

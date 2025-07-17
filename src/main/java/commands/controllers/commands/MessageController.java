@@ -1,7 +1,7 @@
-package controllers.commands;
+package commands.controllers.commands;
 
 import bot.config.AuthedConfig;
-import controllers.Controller;
+import commands.controllers.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class MessageController implements Controller {

@@ -1,13 +1,13 @@
-package controllers.commands;
+package commands.controllers.commands;
 
 import bot.config.AuthedConfig;
-import controllers.Controller;
+import commands.controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.client.TelegramClient;
-import services.game.GameHandler;
-import services.game.GameState;
+import authentication.client.TelegramClient;
+import game.GameHandler;
+import game.GameState;
 import services.messages.Builder;
 import services.messages.MessageBuilder;
 import services.messages.MessageDirector;

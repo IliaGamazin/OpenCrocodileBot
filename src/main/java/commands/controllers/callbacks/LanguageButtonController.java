@@ -1,18 +1,18 @@
-package controllers.callbacks;
+package commands.controllers.callbacks;
 
+import authentication.sessions.Session;
 import bot.config.AuthedConfig;
-import controllers.Controller;
+import commands.controllers.Controller;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.client.TelegramClient;
+import authentication.client.TelegramClient;
 import services.messages.AnswerDirector;
 import services.messages.Builder;
 import services.messages.MessageBuilder;
 import services.messages.MessageDirector;
-import services.sessions.Session;
-import services.sessions.SessionHandler;
+import authentication.sessions.SessionHandler;
 import utilities.Language;
 
 import java.util.Optional;

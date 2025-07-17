@@ -1,4 +1,4 @@
-package services.game;
+package game;
 
 import services.randomword.WordProvider;
 import utilities.Language;
