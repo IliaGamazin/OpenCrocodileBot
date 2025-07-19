@@ -2,6 +2,8 @@ package commands.controllers.commands;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
+import exceptions.ControllerException;
+import exceptions.GameException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -25,22 +27,22 @@ public class RunController implements Controller {
     }
 
     @Override
-    public void handle(AuthedConfig config) throws TelegramApiException {
-        Update update = config.update();
-        long chat = config.chat();
-        long master = update.getMessage().getFrom().getId();
-
-        MessageDirector director = new MessageDirector();
-        Builder builder = new MessageBuilder();
-
+    public void handle(AuthedConfig config) throws ControllerException {
         try {
+            Update update = config.update();
+            long chat = config.chat();
+            long master = update.getMessage().getFrom().getId();
+
+            MessageDirector director = new MessageDirector();
+            Builder builder = new MessageBuilder();
+
             GameState game = games.start(chat, master, config.session().language());
             director.constructWordMessage(builder, config.session(), game);
             SendMessage message = builder.build();
             client.execute(message);
         }
-        catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
+        catch (TelegramApiException | IOException | URISyntaxException e ) {
+            throw new GameException("Service failed", e);
         }
     }
 }

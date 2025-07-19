@@ -1,8 +1,8 @@
 package commands.controllers;
 
 import bot.config.AuthedConfig;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import exceptions.ControllerException;
 
 public interface Controller {
-    void handle(AuthedConfig config) throws TelegramApiException;
+    void handle(AuthedConfig config) throws ControllerException;
 }

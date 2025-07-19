@@ -9,6 +9,7 @@ import commands.middleware.*;
 import authentication.client.TelegramBotClient;
 import commands.handlers.CommandHandler;
 import commands.handlers.Handler;
+import exceptions.PipelineException;
 import routers.Router;
 import routers.UpdateRouter;
 import authentication.client.TelegramClient;
@@ -35,12 +36,12 @@ public class BotFactory {
         Handler handler = new CommandHandler(sessions, games, client);
         Parser parser = new UniversalParser(name);
 
-        List<Middleware<UnAuthedConfig>> preAuthMiddlewares = new ArrayList<>();
-        List<Middleware<AuthedConfig>> postAuthMiddlewares = new ArrayList<>();
+        List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = new ArrayList<>();
+        List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
         preAuthMiddlewares.add(new LoggerMiddleware());
 
-        MiddlewareChain<UnAuthedConfig> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
-        MiddlewareChain<AuthedConfig> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
+        MiddlewareChain<UnAuthedConfig, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
+        MiddlewareChain<AuthedConfig, PipelineException> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
 
         AuthBridge bridge = new Authenticator(sessions);
 

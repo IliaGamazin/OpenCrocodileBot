@@ -1,19 +1,16 @@
 package commands.middleware;
 
 import bot.config.UnAuthedConfig;
+import exceptions.PipelineException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.util.function.Consumer;
-
-public class LoggerMiddleware implements Middleware<UnAuthedConfig>{
+public class LoggerMiddleware implements Middleware<UnAuthedConfig, PipelineException>{
     @Override
-    public void handle(UnAuthedConfig config, Consumer<UnAuthedConfig> next) {
+    public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) {
         Update update = config.update();
 
-        long chat = update.hasMessage() ?
-                update.getMessage().getChatId() :
-                update.getCallbackQuery().getMessage().getChatId();
+        long chat = config.chat();
         User from = update.hasMessage() ?
                 update.getMessage().getFrom() :
                 update.getCallbackQuery().getFrom();

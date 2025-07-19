@@ -6,5 +6,5 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @FunctionalInterface
 public interface AuthBridge {
-    Session authenticate(UnAuthedConfig config) throws TelegramApiException;
+    Session authenticate(UnAuthedConfig config);
 }
