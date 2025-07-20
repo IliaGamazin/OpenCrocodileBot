@@ -5,6 +5,7 @@ import commands.controllers.Controller;
 import commands.handlers.Handler;
 import commands.middleware.Pipeline;
 import exceptions.GameException;
+import exceptions.PipelineException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import services.parsers.ParseResult;
 import services.parsers.Parser;
@@ -22,7 +23,7 @@ public class UpdateRouter implements Router{
         this.pipeline = pipeline;
     }
 
-    public void route(Update update) {
+    public void route(Update update) throws PipelineException {
         ParseResult result = parser.parse(update);
 
         Optional<Controller> controllerOpt = handler.get(result.action()).or(
@@ -39,15 +40,6 @@ public class UpdateRouter implements Router{
         );
 
         Controller controller = controllerOpt.get();
-        try {
-            pipeline.execute(config, controller);
-        }
-        catch (GameException e) {
-            System.out.println("Game excpetion caught");
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        pipeline.execute(config, controller);
     }
 }

@@ -4,6 +4,9 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
+import exceptions.TelegramException;
+import exceptions.ValidationException;
+import game.GameState;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import authentication.client.TelegramClient;
@@ -26,20 +29,18 @@ public class SeeButtonController implements Controller {
             String query = update.getCallbackQuery().getId();
 
             AnswerDirector director = new AnswerDirector();
+            GameState game = games.get(config.chat())
+                    .orElseThrow(() -> new GameException("Game not found"));
 
-            AnswerCallbackQuery answer = games.get(config.chat())
-                    .map(game -> {
-                        if (game.master() != update.getCallbackQuery().getFrom().getId()) {
-                            return director.constructNotMaster(query);
-                        }
-                        return director.constructWord(query, game.word());
-                    })
-                    .orElse(director.constructInactive(query));
+            if (game.master() != update.getCallbackQuery().getFrom().getId()) {
+                throw new ValidationException("Not enough permissions");
+            }
 
+            AnswerCallbackQuery answer = director.constructWord(query, game.word());
             client.execute(answer);
         }
         catch (TelegramApiException e) {
-            throw new GameException("Service failed", e);
+            throw new TelegramException("Telegram API failed", e);
         }
     }
 }

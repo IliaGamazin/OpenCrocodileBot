@@ -4,6 +4,7 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
+import exceptions.TelegramException;
 import exceptions.ValidationException;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -46,8 +47,11 @@ public class NextButtonController implements Controller {
             AnswerCallbackQuery answer = director.constructWord(query, updated.word());
             client.execute(answer);
         }
-        catch (IOException | URISyntaxException | TelegramApiException e) {
-            throw new GameException("Service failed", e);
+        catch(IOException | URISyntaxException e) {
+            throw new GameException("Service failed");
+        }
+        catch (TelegramApiException e) {
+            throw new TelegramException("Telegram API failed", e);
         }
     }
 }

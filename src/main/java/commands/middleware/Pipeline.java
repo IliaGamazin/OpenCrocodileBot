@@ -5,7 +5,6 @@ import authentication.sessions.Session;
 import bot.config.AuthedConfig;
 import bot.config.UnAuthedConfig;
 import commands.controllers.Controller;
-import exceptions.ControllerException;
 import exceptions.PipelineException;
 
 public class Pipeline {

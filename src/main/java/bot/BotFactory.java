@@ -38,6 +38,7 @@ public class BotFactory {
 
         List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = new ArrayList<>();
         List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
+        preAuthMiddlewares.add(new ErrorHandler(client));
         preAuthMiddlewares.add(new LoggerMiddleware());
 
         MiddlewareChain<UnAuthedConfig, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);

@@ -4,6 +4,7 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
+import exceptions.TelegramException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -41,7 +42,10 @@ public class RunController implements Controller {
             SendMessage message = builder.build();
             client.execute(message);
         }
-        catch (TelegramApiException | IOException | URISyntaxException e ) {
+        catch (TelegramApiException e) {
+            throw new TelegramException("Telegram API failed", e);
+        }
+        catch (IOException | URISyntaxException e ) {
             throw new GameException("Service failed", e);
         }
     }

@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 public class LoggerMiddleware implements Middleware<UnAuthedConfig, PipelineException>{
     @Override
-    public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) {
+    public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) throws PipelineException {
         Update update = config.update();
 
         long chat = config.chat();

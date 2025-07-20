@@ -4,6 +4,7 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
+import exceptions.TelegramException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import authentication.client.TelegramClient;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -29,7 +30,7 @@ public class LanguageController implements Controller {
             client.execute(message);
         }
         catch (TelegramApiException e) {
-            throw new GameException("Service failed", e);
+            throw new TelegramException("Telegram API failed", e);
         }
     }
 }

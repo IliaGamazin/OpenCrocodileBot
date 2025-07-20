@@ -5,6 +5,7 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
+import exceptions.TelegramException;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -54,7 +55,7 @@ public class LanguageButtonController implements Controller {
             }
         }
         catch (TelegramApiException e) {
-            throw new GameException("Service failed", e);
+            throw new TelegramException("Telegram API failed", e);
         }
     }
 }
