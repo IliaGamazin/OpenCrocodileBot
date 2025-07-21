@@ -2,6 +2,7 @@ package routers;
 
 import bot.config.UnAuthedConfig;
 import commands.controllers.Controller;
+import commands.controllers.commands.MessageController;
 import commands.handlers.Handler;
 import commands.middleware.Pipeline;
 import exceptions.GameException;

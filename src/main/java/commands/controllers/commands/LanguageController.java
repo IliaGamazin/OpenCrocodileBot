@@ -3,9 +3,7 @@ package commands.controllers.commands;
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import exceptions.ControllerException;
-import exceptions.GameException;
 import exceptions.TelegramException;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import authentication.client.TelegramClient;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.messages.Builder;
@@ -25,9 +23,8 @@ public class LanguageController implements Controller {
             MessageDirector director = new MessageDirector();
             Builder builder = new MessageBuilder();
 
-            director.constructLanguageMessage(builder, config.session());
-            SendMessage message = builder.build();
-            client.execute(message);
+            director.constructLanguageMessage(builder, config.chat());
+            client.execute(builder.build());
         }
         catch (TelegramApiException e) {
             throw new TelegramException("Telegram API failed", e);

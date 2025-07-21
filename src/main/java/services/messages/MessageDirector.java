@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageDirector {
-    public void constructLanguageMessage(Builder builder, Session session) {
-        builder.setChatId(session.chat());
+    public void constructLanguageMessage(Builder builder, long chat) {
+        builder.setChatId(chat);
         builder.setText("Choose the language");
 
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -45,9 +45,9 @@ public class MessageDirector {
         builder.setReplyMarkup(markup);
     }
 
-    public void constructWordMessage(Builder builder, Session session, GameState game) {
-        builder.setChatId(session.chat());
-        builder.setText(game.master() + " explains the word");
+    public void constructWordMessage(Builder builder, long chat, String master) {
+        builder.setChatId(chat);
+        builder.setText(master + " explains the word");
 
         InlineKeyboardButton seeButton = new InlineKeyboardButton();
         seeButton.setText("\uD83D\uDD0D See word");
@@ -72,10 +72,27 @@ public class MessageDirector {
         builder.setReplyMarkup(markup);
     }
 
-//    public void constructWinMessage(Builder builder, Session session, ) {
-//        builder.setChatId(session.chat());
-//        builder.setText(session.);
-//    }
+    public void constructWinMessage(Builder builder, long chat, String winner) {
+        builder.setChatId(chat);
+        builder.setText(winner + " won");
+
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        InlineKeyboardButton claim = new InlineKeyboardButton();
+        claim.setText("Claim");
+        claim.setCallbackData("claim-callback");
+        row.add(claim);
+        rows.add(row);
+        markup.setKeyboard(rows);
+        builder.setReplyMarkup(markup);
+    }
+
+    public void constructErrorMessage(Builder builder, long chat, String message) {
+        builder.setChatId(chat);
+        builder.setText(message);
+    }
 
     public void constructLanguageChangedMessage(Builder builder, Session session) {
         builder.setChatId(session.chat());

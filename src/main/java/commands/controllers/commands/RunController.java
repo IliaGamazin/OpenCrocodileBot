@@ -5,6 +5,7 @@ import commands.controllers.Controller;
 import exceptions.ControllerException;
 import exceptions.GameException;
 import exceptions.TelegramException;
+import exceptions.ValidationException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -22,7 +23,7 @@ public class RunController implements Controller {
     private final GameHandler games;
     private final TelegramClient client;
 
-    public RunController(GameHandler games, TelegramClient client) {
+    public RunController(TelegramClient client, GameHandler games) {
         this.games = games;
         this.client = client;
     }
@@ -37,10 +38,13 @@ public class RunController implements Controller {
             MessageDirector director = new MessageDirector();
             Builder builder = new MessageBuilder();
 
-            GameState game = games.start(chat, master, config.session().language());
-            director.constructWordMessage(builder, config.session(), game);
-            SendMessage message = builder.build();
-            client.execute(message);
+            if (games.get(chat).isPresent()) {
+                throw new ValidationException("Game is already started!");
+            }
+            games.start(chat, master, config.session().language());
+
+            director.constructWordMessage(builder, chat, update.getMessage().getFrom().getFirstName());
+            client.execute(builder.build());
         }
         catch (TelegramApiException e) {
             throw new TelegramException("Telegram API failed", e);

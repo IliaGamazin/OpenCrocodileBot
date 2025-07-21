@@ -6,6 +6,8 @@ import exceptions.*;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.messages.AnswerDirector;
+import services.messages.MessageBuilder;
+import services.messages.MessageDirector;
 
 public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineException> {
     private final TelegramClient client;
@@ -16,23 +18,22 @@ public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineExceptio
 
     @Override
     public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) throws PipelineException {
-        AnswerDirector director = new AnswerDirector();
+        AnswerDirector answers = new AnswerDirector();
+        MessageDirector messages = new MessageDirector();
         try {
             try {
                 next.accept(config);
             }
-            catch (ValidationException e) {
+            catch (ValidationException | GameException e) {
                 if (config.update().hasCallbackQuery()) {
                     String query = config.update().getCallbackQuery().getId();
-                    AnswerCallbackQuery answer = director.constructNotMaster(query);
+                    AnswerCallbackQuery answer = answers.constructError(query, e.getMessage());
                     client.execute(answer);
                 }
-            }
-            catch (GameException e) {
-                if (config.update().hasCallbackQuery()) {
-                    String query = config.update().getCallbackQuery().getId();
-                    AnswerCallbackQuery answer = director.constructInactive(query);
-                    client.execute(answer);
+                else {
+                    MessageBuilder builder = new MessageBuilder();
+                    messages.constructErrorMessage(builder, config.chat(), e.getMessage());
+                    client.execute(builder.build());
                 }
             }
         }

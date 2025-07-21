@@ -19,9 +19,9 @@ public class CommandHandler implements Handler{
 
     public CommandHandler(SessionHandler sessions, GameHandler games, TelegramClient client) {
         commands = new HashMap<>();
-        commands.put("run", new RunController(games, client));
+        commands.put("run", new RunController(client, games));
         commands.put("language", new LanguageController(client));
-        commands.put("message", new MessageController());
+        commands.put("message", new MessageController(client, games));
         commands.put("language-callback", new LanguageButtonController(sessions, client));
         commands.put("see-callback", new SeeButtonController(client, games));
         commands.put("next-callback", new NextButtonController(client, games));
