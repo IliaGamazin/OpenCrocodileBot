@@ -2,34 +2,31 @@ package commands.controllers.callbacks;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
+import commands.controllers.ControllerProxy;
 import exceptions.ControllerException;
 import exceptions.GameException;
-import exceptions.TelegramException;
 import exceptions.ValidationException;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import authentication.client.TelegramClient;
 import game.GameHandler;
 import game.GameState;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.messages.AnswerDirector;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 
 public class NextButtonController implements Controller {
     private final TelegramClient client;
     private final GameHandler games;
+    private final ControllerProxy proxy;
 
-    public NextButtonController(TelegramClient client, GameHandler games) {
+    public NextButtonController(TelegramClient client, GameHandler games, ControllerProxy proxy) {
         this.client = client;
         this.games = games;
+        this.proxy = proxy;
     }
 
     @Override
     public void handle(AuthedConfig config) throws ControllerException {
-        try {
+        proxy.wrap(conf -> {
             Update update = config.update();
             String query = update.getCallbackQuery().getId();
             AnswerDirector director = new AnswerDirector();
@@ -46,12 +43,6 @@ public class NextButtonController implements Controller {
 
             AnswerCallbackQuery answer = director.constructWord(query, updated.word());
             client.execute(answer);
-        }
-        catch(IOException | URISyntaxException e) {
-            throw new GameException("Service failed");
-        }
-        catch (TelegramApiException e) {
-            throw new TelegramException("Telegram API failed", e);
-        }
+        }).handle(config);
     }
 }

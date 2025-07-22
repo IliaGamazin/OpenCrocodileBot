@@ -1,7 +1,8 @@
 package services.parsers;
 
+import bot.config.UnAuthedConfig;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Parser {
-    ParseResult parse(Update input);
+    UnAuthedConfig parse(Update input);
 }

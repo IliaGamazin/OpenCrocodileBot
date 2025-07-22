@@ -19,22 +19,6 @@ public class AnswerDirector {
                 .build();
     }
 
-    public AnswerCallbackQuery constructInactive(String query) {
-        return AnswerCallbackQuery.builder()
-                .callbackQueryId(query)
-                .text("The game is inactive")
-                .showAlert(false)
-                .build();
-    }
-
-    public AnswerCallbackQuery constructNotMaster(String query) {
-        return AnswerCallbackQuery.builder()
-                .callbackQueryId(query)
-                .text("You're not the game master!")
-                .showAlert(false)
-                .build();
-    }
-
     public AnswerCallbackQuery constructError(String query, String error) {
         return AnswerCallbackQuery.builder()
                 .callbackQueryId(query)

@@ -1,6 +1,7 @@
 package commands.handlers;
 
 import commands.controllers.Controller;
+import commands.controllers.ControllerProxy;
 import commands.controllers.callbacks.LanguageButtonController;
 import commands.controllers.callbacks.NextButtonController;
 import commands.controllers.callbacks.SeeButtonController;
@@ -8,6 +9,7 @@ import commands.controllers.commands.LanguageController;
 import commands.controllers.commands.MessageController;
 import commands.controllers.commands.RunController;
 import authentication.client.TelegramClient;
+import commands.controllers.proxies.ExceptionProxy;
 import game.GameHandler;
 import authentication.sessions.SessionHandler;
 
@@ -19,12 +21,14 @@ public class CommandHandler implements Handler{
 
     public CommandHandler(SessionHandler sessions, GameHandler games, TelegramClient client) {
         commands = new HashMap<>();
-        commands.put("run", new RunController(client, games));
-        commands.put("language", new LanguageController(client));
-        commands.put("message", new MessageController(client, games));
-        commands.put("language-callback", new LanguageButtonController(sessions, client));
-        commands.put("see-callback", new SeeButtonController(client, games));
-        commands.put("next-callback", new NextButtonController(client, games));
+
+        ControllerProxy proxy = new ExceptionProxy();
+        commands.put("run", new RunController(client, games, proxy));
+        commands.put("language", new LanguageController(client, proxy));
+        commands.put("message", new MessageController(client, games, proxy));
+        commands.put("language-callback", new LanguageButtonController(sessions, client, proxy));
+        commands.put("see-callback", new SeeButtonController(client, games, proxy));
+        commands.put("next-callback", new NextButtonController(client, games, proxy));
     }
 
     public Optional<Controller> get(String command) {

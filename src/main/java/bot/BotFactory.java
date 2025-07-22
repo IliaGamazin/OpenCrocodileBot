@@ -36,17 +36,8 @@ public class BotFactory {
         Handler handler = new CommandHandler(sessions, games, client);
         Parser parser = new UniversalParser(name);
 
-        List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = new ArrayList<>();
-        List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
-        preAuthMiddlewares.add(new ErrorHandler(client));
-        preAuthMiddlewares.add(new LoggerMiddleware());
+        Pipeline pipeline = getPipeline(client, sessions);
 
-        MiddlewareChain<UnAuthedConfig, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
-        MiddlewareChain<AuthedConfig, PipelineException> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
-
-        AuthBridge bridge = new Authenticator(sessions);
-
-        Pipeline pipeline = new Pipeline(preAuthChain, postAuthChain, bridge);
         Router router = new UpdateRouter(handler, parser, pipeline);
 
         BotConfig config = new BotConfig(
@@ -61,5 +52,17 @@ public class BotFactory {
         client.setBot(bot);
 
         return bot;
+    }
+
+    private static Pipeline getPipeline(TelegramClient client, SessionHandler sessions) {
+        List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = List.of(new ErrorHandler(client), new LoggerMiddleware());
+        List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
+
+        MiddlewareChain<UnAuthedConfig, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
+        MiddlewareChain<AuthedConfig, PipelineException> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
+
+        AuthBridge bridge = new Authenticator(sessions);
+
+        return new Pipeline(preAuthChain, postAuthChain, bridge);
     }
 }

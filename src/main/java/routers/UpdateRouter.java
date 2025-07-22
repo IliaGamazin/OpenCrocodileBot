@@ -2,16 +2,11 @@ package routers;
 
 import bot.config.UnAuthedConfig;
 import commands.controllers.Controller;
-import commands.controllers.commands.MessageController;
 import commands.handlers.Handler;
 import commands.middleware.Pipeline;
-import exceptions.GameException;
 import exceptions.PipelineException;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import services.parsers.ParseResult;
 import services.parsers.Parser;
-
-import java.util.Optional;
 
 public class UpdateRouter implements Router{
     private final Handler handler;
@@ -25,22 +20,12 @@ public class UpdateRouter implements Router{
     }
 
     public void route(Update update) throws PipelineException {
-        ParseResult result = parser.parse(update);
+        UnAuthedConfig config = parser.parse(update);
 
-        Optional<Controller> controllerOpt = handler.get(result.action()).or(
-                () -> update.hasMessage() ? handler.get("message") : Optional.empty());
-        if (controllerOpt.isEmpty()) {
-            return;
-        }
+        Controller controller = handler.get(config.action())
+                .or(() -> handler.get("message"))
+                .orElseThrow(()-> new PipelineException("Invalid command"));
 
-        UnAuthedConfig config = new UnAuthedConfig(
-                result.action(),
-                result.chat(),
-                update,
-                result.arguments()
-        );
-
-        Controller controller = controllerOpt.get();
         pipeline.execute(config, controller);
     }
 }

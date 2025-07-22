@@ -3,13 +3,11 @@ package commands.controllers.callbacks;
 import authentication.sessions.Session;
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
+import commands.controllers.ControllerProxy;
 import exceptions.ControllerException;
-import exceptions.GameException;
-import exceptions.TelegramException;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import authentication.client.TelegramClient;
 import services.messages.AnswerDirector;
 import services.messages.Builder;
@@ -23,15 +21,17 @@ import java.util.Optional;
 public class LanguageButtonController implements Controller {
     private final SessionHandler sessions;
     private final TelegramClient client;
+    private final ControllerProxy proxy;
 
-    public LanguageButtonController(SessionHandler sessions, TelegramClient client) {
+    public LanguageButtonController(SessionHandler sessions, TelegramClient client, ControllerProxy proxy) {
         this.sessions = sessions;
         this.client = client;
+        this.proxy = proxy;
     }
 
     @Override
     public void handle(AuthedConfig config) throws ControllerException {
-        try {
+        proxy.wrap(conf -> {
             Update update = config.update();
             long chat = config.chat();
 
@@ -53,9 +53,6 @@ public class LanguageButtonController implements Controller {
                 SendMessage message = builder.build();
                 client.execute(message);
             }
-        }
-        catch (TelegramApiException e) {
-            throw new TelegramException("Telegram API failed", e);
-        }
+        }).handle(config);
     }
 }

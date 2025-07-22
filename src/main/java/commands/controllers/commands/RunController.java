@@ -2,35 +2,30 @@ package commands.controllers.commands;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
+import commands.controllers.ControllerProxy;
 import exceptions.ControllerException;
-import exceptions.GameException;
-import exceptions.TelegramException;
 import exceptions.ValidationException;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import authentication.client.TelegramClient;
 import game.GameHandler;
-import game.GameState;
 import services.messages.Builder;
 import services.messages.MessageBuilder;
 import services.messages.MessageDirector;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 public class RunController implements Controller {
     private final GameHandler games;
     private final TelegramClient client;
+    private final ControllerProxy proxy;
 
-    public RunController(TelegramClient client, GameHandler games) {
+    public RunController(TelegramClient client, GameHandler games, ControllerProxy proxy) {
         this.games = games;
         this.client = client;
+        this.proxy = proxy;
     }
 
     @Override
     public void handle(AuthedConfig config) throws ControllerException {
-        try {
+        proxy.wrap(conf -> {
             Update update = config.update();
             long chat = config.chat();
             long master = update.getMessage().getFrom().getId();
@@ -45,12 +40,6 @@ public class RunController implements Controller {
 
             director.constructWordMessage(builder, chat, update.getMessage().getFrom().getFirstName());
             client.execute(builder.build());
-        }
-        catch (TelegramApiException e) {
-            throw new TelegramException("Telegram API failed", e);
-        }
-        catch (IOException | URISyntaxException e ) {
-            throw new GameException("Service failed", e);
-        }
+        }).handle(config);
     }
 }
