@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class WiktionaryProvider implements WordProvider {
     @Override
@@ -58,9 +59,8 @@ public class WiktionaryProvider implements WordProvider {
             }
         }
 
-        String word = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-
-        return URLDecoder.decode(word,"UTF-8");
+        String word = currentUrl.substring(currentUrl.lastIndexOf('/') + 1).replace("_", " ");
+        return URLDecoder.decode(word, StandardCharsets.UTF_8);
     }
 }
 

@@ -24,7 +24,12 @@
     <dependency>
       <groupId>org.telegram</groupId>
       <artifactId>telegrambots</artifactId>
-      <version>6.9.7.0</version>
+      <version>6.9.7.1</version> <!-- Last version with LongPollingBot -->
+    </dependency>
+    <dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambots-meta</artifactId>
+      <version>6.9.7.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

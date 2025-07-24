@@ -2,7 +2,6 @@ package services.messages;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class MessageDirector {
             .build();
     }
 
-    private ReplyKeyboard createLanguageKeyboard() {
+    private InlineKeyboardMarkup createLanguageKeyboard() {
         return InlineKeyboardMarkup.builder()
             .keyboardRow(createRowButton("\uD83C\uDDEC\uD83C\uDDE7", "language-callback en"))
             .keyboardRow(createRowButton("\uD83C\uDDF7\uD83C\uDDFA", "language-callback ru"))
@@ -54,14 +53,14 @@ public class MessageDirector {
             .build();
     }
 
-    private ReplyKeyboard createWordKeyboard() {
+    public InlineKeyboardMarkup createWordKeyboard() {
         return InlineKeyboardMarkup.builder()
             .keyboardRow(createRowButton("\uD83D\uDD0D See word", "see-callback"))
             .keyboardRow(createRowButton("Next word ⏩", "next-callback"))
             .build();
     }
 
-    private ReplyKeyboard createWinKeyboard() {
+    private InlineKeyboardMarkup createWinKeyboard() {
         return InlineKeyboardMarkup.builder()
             .keyboardRow(createRowButton("Claim", "claim-callback"))
             .build();

@@ -30,7 +30,7 @@ public class CommandHandler implements Handler{
         commands.put("language-callback", new LanguageButtonController(sessions, client, proxy));
         commands.put("see-callback", new SeeButtonController(client, games, proxy));
         commands.put("next-callback", new NextButtonController(client, games, proxy));
-        commands.put("claim-callback", new ClaimButtonController(client, games));
+        commands.put("claim-callback", new ClaimButtonController(client, games, proxy));
     }
 
     public Optional<Controller> get(String command) {

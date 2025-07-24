@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import authentication.client.TelegramClient;
 import game.GameHandler;
+import org.telegram.telegrambots.meta.api.objects.User;
 import services.messages.MessageDirector;
 
 public class RunController implements Controller {
@@ -27,16 +28,17 @@ public class RunController implements Controller {
         proxy.wrap(conf -> {
             Update update = config.update();
             long chat = config.chat();
-            long master = update.getMessage().getFrom().getId();
+            User master = update.getMessage().getFrom();
 
             MessageDirector director = new MessageDirector();
 
             if (games.get(chat).isPresent()) {
                 throw new ValidationException("Game is already started!");
             }
-            games.start(chat, master, config.session().language());
 
-            SendMessage message = director.constructWordMessage(chat, update.getMessage().getFrom().getFirstName());
+            games.start(chat, master.getId(), config.session().language());
+
+            SendMessage message = director.constructWordMessage(chat, master.getFirstName());
             client.execute(message);
         }).handle(config);
     }
