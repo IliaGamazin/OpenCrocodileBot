@@ -1,7 +1,8 @@
 package commands.handlers;
 
 import commands.controllers.Controller;
-import commands.controllers.ControllerProxy;
+import commands.controllers.callbacks.ClaimButtonController;
+import commands.controllers.proxies.ControllerProxy;
 import commands.controllers.callbacks.LanguageButtonController;
 import commands.controllers.callbacks.NextButtonController;
 import commands.controllers.callbacks.SeeButtonController;
@@ -29,6 +30,7 @@ public class CommandHandler implements Handler{
         commands.put("language-callback", new LanguageButtonController(sessions, client, proxy));
         commands.put("see-callback", new SeeButtonController(client, games, proxy));
         commands.put("next-callback", new NextButtonController(client, games, proxy));
+        commands.put("claim-callback", new ClaimButtonController(client, games));
     }
 
     public Optional<Controller> get(String command) {

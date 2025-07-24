@@ -4,9 +4,9 @@ import authentication.client.TelegramClient;
 import bot.config.UnAuthedConfig;
 import exceptions.*;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import services.messages.AnswerDirector;
-import services.messages.MessageBuilder;
 import services.messages.MessageDirector;
 
 public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineException> {
@@ -31,9 +31,8 @@ public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineExceptio
                     client.execute(answer);
                 }
                 else {
-                    MessageBuilder builder = new MessageBuilder();
-                    messages.constructErrorMessage(builder, config.chat(), e.getMessage());
-                    client.execute(builder.build());
+                    SendMessage message = messages.constructErrorMessage(config.chat(), e.getMessage());
+                    client.execute(message);
                 }
             }
         }

@@ -2,7 +2,7 @@ package commands.controllers.callbacks;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
-import commands.controllers.ControllerProxy;
+import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
 import exceptions.GameException;
 import exceptions.ValidationException;

@@ -2,11 +2,10 @@ package commands.controllers.commands;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
-import commands.controllers.ControllerProxy;
+import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
 import authentication.client.TelegramClient;
-import services.messages.Builder;
-import services.messages.MessageBuilder;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import services.messages.MessageDirector;
 
 public class LanguageController implements Controller {
@@ -22,10 +21,8 @@ public class LanguageController implements Controller {
     public void handle(AuthedConfig config) throws ControllerException {
         proxy.wrap(conf -> {
             MessageDirector director = new MessageDirector();
-            Builder builder = new MessageBuilder();
-
-            director.constructLanguageMessage(builder, config.chat());
-            client.execute(builder.build());
+            SendMessage message =  director.constructLanguageMessage(config.chat());
+            client.execute(message);
         }).handle(config);
     }
 }

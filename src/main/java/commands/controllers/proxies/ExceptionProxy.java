@@ -2,7 +2,6 @@ package commands.controllers.proxies;
 
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
-import commands.controllers.ControllerProxy;
 import commands.middleware.ThrowingConsumer;
 import exceptions.ControllerException;
 import exceptions.GameException;

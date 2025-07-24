@@ -3,14 +3,12 @@ package commands.controllers.commands;
 import authentication.client.TelegramClient;
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
-import commands.controllers.ControllerProxy;
+import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
-import exceptions.TelegramException;
 import game.GameHandler;
 import game.GameState;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import services.messages.MessageBuilder;
 import services.messages.MessageDirector;
 
 import java.util.Objects;
@@ -42,10 +40,9 @@ public class MessageController implements Controller {
 
             if (Objects.equals(game.word(), config.update().getMessage().getText())) {
                 MessageDirector director = new MessageDirector();
-                MessageBuilder builder = new MessageBuilder();
 
-                director.constructWinMessage(builder, chat, update.getMessage().getFrom().getFirstName());
-                client.execute(builder.build());
+                SendMessage message = director.constructWinMessage(chat, update.getMessage().getFrom().getFirstName());
+                client.execute(message);
                 games.end(chat);
             }
         }).handle(config);
