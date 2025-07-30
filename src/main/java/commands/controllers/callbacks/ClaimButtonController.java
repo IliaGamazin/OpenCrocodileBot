@@ -26,8 +26,8 @@ public class ClaimButtonController implements Controller {
     public void handle(AuthedConfig config) throws ControllerException {
         proxy.wrap(conf -> {
             Update update = config.update();
-            long chat = config.chat();
             User from = update.getCallbackQuery().getFrom();
+            long chat = config.chat();
 
             MessageDirector director = new MessageDirector();
             SendMessage message = director.constructWordMessage(chat, from.getFirstName(), from.getId());
@@ -36,6 +36,7 @@ public class ClaimButtonController implements Controller {
                 .chatId(chat)
                 .messageId(update.getCallbackQuery().getMessage().getMessageId())
                 .text(message.getText())
+                .parseMode("MarkdownV2")
                 .replyMarkup(director.createWordKeyboard())
                 .build();
             games.start(chat, from.getId(), config.session().language());

@@ -30,7 +30,6 @@ public class SeeButtonController implements Controller {
             Update update = config.update();
             String query = update.getCallbackQuery().getId();
 
-            AnswerDirector director = new AnswerDirector();
             GameState game = games.get(config.chat())
                     .orElseThrow(() -> new GameException("Game not found"));
 
@@ -38,6 +37,7 @@ public class SeeButtonController implements Controller {
                 throw new ValidationException("Not enough permissions");
             }
 
+            AnswerDirector director = new AnswerDirector();
             AnswerCallbackQuery answer = director.constructWord(query, game.word());
             client.execute(answer);
         }).handle(config);

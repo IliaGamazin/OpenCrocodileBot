@@ -1,23 +1,22 @@
 package commands.controllers.commands;
 
+import authentication.client.TelegramClient;
 import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
-import exceptions.ValidationException;
+import game.GameHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import authentication.client.TelegramClient;
-import game.GameHandler;
 import org.telegram.telegrambots.meta.api.objects.User;
 import services.messages.MessageDirector;
 
-public class RunController implements Controller {
+public class GiveUpController implements Controller {
     private final GameHandler games;
     private final TelegramClient client;
     private final ControllerProxy proxy;
 
-    public RunController(TelegramClient client, GameHandler games, ControllerProxy proxy) {
+    public GiveUpController(TelegramClient client, GameHandler games, ControllerProxy proxy) {
         this.games = games;
         this.client = client;
         this.proxy = proxy;
@@ -30,14 +29,10 @@ public class RunController implements Controller {
             User from = update.getMessage().getFrom();
             long chat = config.chat();
 
-            if (games.get(chat).isPresent()) {
-                throw new ValidationException("Game is already started!");
-            }
-
-            games.start(chat, from.getId(), config.session().language());
+            games.end(chat);
 
             MessageDirector director = new MessageDirector();
-            SendMessage message = director.constructWordMessage(chat, from.getFirstName(), from.getId());
+            SendMessage message = director.constructLoseMessage(chat, from.getFirstName(), from.getId());
             client.execute(message);
         }).handle(config);
     }

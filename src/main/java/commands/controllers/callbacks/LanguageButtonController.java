@@ -30,13 +30,13 @@ public class LanguageButtonController implements Controller {
     public void handle(AuthedConfig config) throws ControllerException {
         proxy.wrap(conf -> {
             Update update = config.update();
-            long chat = config.chat();
-
             String query = update.getCallbackQuery().getId();
             String code = config.args()[0];
+            long chat = config.chat();
 
             sessions.changeLanguage(chat, Language.fromCode(code));
-            Session session = sessions.getSession(chat).orElseThrow(() -> new GameException("Session not found"));
+            Session session = sessions.getSession(chat)
+                .orElseThrow(() -> new GameException("Session not found"));
 
             AnswerDirector answerDirector = new AnswerDirector();
             AnswerCallbackQuery answer = answerDirector.constructSettingChanged(query);

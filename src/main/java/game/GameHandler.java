@@ -17,11 +17,10 @@ public class GameHandler {
         games = new ConcurrentHashMap<>();
     }
 
-    public GameState start(long chat, long master, Language language) throws IOException, URISyntaxException {
+    public void start(long chat, long master, Language language) throws IOException, URISyntaxException {
         String word = provider.getRandomWord(language);
         GameState game = new GameState(chat, master, word);
         games.put(chat, game);
-        return game;
     }
 
     public Optional<GameState> nextWord(long chat, Language language) throws IOException, URISyntaxException {

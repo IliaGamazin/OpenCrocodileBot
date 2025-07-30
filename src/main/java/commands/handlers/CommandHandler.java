@@ -2,6 +2,7 @@ package commands.handlers;
 
 import commands.controllers.Controller;
 import commands.controllers.callbacks.ClaimButtonController;
+import commands.controllers.commands.GiveUpController;
 import commands.controllers.proxies.ControllerProxy;
 import commands.controllers.callbacks.LanguageButtonController;
 import commands.controllers.callbacks.NextButtonController;
@@ -21,10 +22,11 @@ public class CommandHandler implements Handler{
     private final HashMap<String, Controller> commands;
 
     public CommandHandler(SessionHandler sessions, GameHandler games, TelegramClient client) {
+        ControllerProxy proxy = new ExceptionProxy();
         commands = new HashMap<>();
 
-        ControllerProxy proxy = new ExceptionProxy();
         commands.put("run", new RunController(client, games, proxy));
+        commands.put("give_up", new GiveUpController(client, games, proxy));
         commands.put("language", new LanguageController(client, proxy));
         commands.put("message", new MessageController(client, games, proxy));
         commands.put("language-callback", new LanguageButtonController(sessions, client, proxy));

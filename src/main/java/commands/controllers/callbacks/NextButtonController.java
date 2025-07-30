@@ -29,18 +29,19 @@ public class NextButtonController implements Controller {
         proxy.wrap(conf -> {
             Update update = config.update();
             String query = update.getCallbackQuery().getId();
-            AnswerDirector director = new AnswerDirector();
+            long chat = config.chat();
 
-            GameState game = games.get(config.chat())
+            GameState game = games.get(chat)
                     .orElseThrow(() -> new GameException("Game not found"));
 
             if (game.master() != update.getCallbackQuery().getFrom().getId()) {
                 throw new ValidationException("Not enough permissions");
             }
 
-            GameState updated = games.nextWord(config.chat(), config.session().language())
+            GameState updated = games.nextWord(chat, config.session().language())
                     .orElseThrow(() -> new GameException("Failed to get next word"));
 
+            AnswerDirector director = new AnswerDirector();
             AnswerCallbackQuery answer = director.constructWord(query, updated.word());
             client.execute(answer);
         }).handle(config);

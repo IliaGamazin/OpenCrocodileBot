@@ -18,16 +18,25 @@ public class MessageDirector {
     public SendMessage constructWordMessage(long chat, String name, long id) {
         return SendMessage.builder()
             .chatId(chat)
-            .text("[" + escape(name) + "](tg://user?id=" + id + ") explains the word\\!")
+            .text("[" + escape(name) + "](tg://user?id=" + id + ") explains the word\\! \uD83D\uDED6")
             .parseMode("MarkdownV2")
             .replyMarkup(createWordKeyboard())
+            .build();
+    }
+
+    public SendMessage constructLoseMessage(long chat, String name, long id) {
+        return SendMessage.builder()
+            .chatId(chat)
+            .text("[" + escape(name) + "](tg://user?id=" + id + ") lost :\\( \uD83E\uDD13")
+            .parseMode("MarkdownV2")
+            .replyMarkup(createWinKeyboard())
             .build();
     }
 
     public SendMessage constructWinMessage(long chat, String name, long id) {
         return SendMessage.builder()
             .chatId(chat)
-            .text("[" + escape(name) + "](tg://user?id=" + id + ") won\\!")
+            .text("[" + escape(name) + "](tg://user?id=" + id + ") won\\! \uD83C\uDF89")
             .parseMode("MarkdownV2")
             .replyMarkup(createWinKeyboard())
             .build();

@@ -29,6 +29,7 @@ public class MessageController implements Controller {
     public void handle(AuthedConfig config) throws ControllerException {
         proxy.wrap(conf -> {
             Update update = config.update();
+            User from = update.getMessage().getFrom();
             long chat = config.chat();
 
             Optional<GameState> gameOpt = games.get(config.chat());
@@ -36,14 +37,15 @@ public class MessageController implements Controller {
                 return;
             }
 
-            User from = update.getMessage().getFrom();
             GameState game = gameOpt.get();
 
-            if (game.word().equalsIgnoreCase(config.update().getMessage().getText())) {
+            if (game.word().equalsIgnoreCase(config.update().getMessage().getText())
+                && from.getId() != game.master()) {
+                games.end(chat);
+
                 MessageDirector director = new MessageDirector();
                 SendMessage message = director.constructWinMessage(chat, from.getFirstName(), from.getId());
                 client.execute(message);
-                games.end(chat);
             }
         }).handle(config);
     }
