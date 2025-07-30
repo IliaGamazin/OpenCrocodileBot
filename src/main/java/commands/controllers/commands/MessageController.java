@@ -9,9 +9,9 @@ import game.GameHandler;
 import game.GameState;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import services.messages.MessageDirector;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class MessageController implements Controller {
@@ -36,12 +36,12 @@ public class MessageController implements Controller {
                 return;
             }
 
+            User from = update.getMessage().getFrom();
             GameState game = gameOpt.get();
 
-            if (Objects.equals(game.word(), config.update().getMessage().getText())) {
+            if (game.word().equalsIgnoreCase(config.update().getMessage().getText())) {
                 MessageDirector director = new MessageDirector();
-
-                SendMessage message = director.constructWinMessage(chat, update.getMessage().getFrom().getFirstName());
+                SendMessage message = director.constructWinMessage(chat, from.getFirstName(), from.getId());
                 client.execute(message);
                 games.end(chat);
             }

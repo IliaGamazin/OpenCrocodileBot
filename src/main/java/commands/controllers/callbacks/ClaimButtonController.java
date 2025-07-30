@@ -27,10 +27,10 @@ public class ClaimButtonController implements Controller {
         proxy.wrap(conf -> {
             Update update = config.update();
             long chat = config.chat();
-            User master = update.getCallbackQuery().getFrom();
+            User from = update.getCallbackQuery().getFrom();
 
             MessageDirector director = new MessageDirector();
-            SendMessage message = director.constructWordMessage(chat, master.getFirstName());
+            SendMessage message = director.constructWordMessage(chat, from.getFirstName(), from.getId());
 
             EditMessageText edit = EditMessageText.builder()
                 .chatId(chat)
@@ -38,7 +38,7 @@ public class ClaimButtonController implements Controller {
                 .text(message.getText())
                 .replyMarkup(director.createWordKeyboard())
                 .build();
-            games.start(chat, master.getId(), config.session().language());
+            games.start(chat, from.getId(), config.session().language());
             client.execute(edit);
         }).handle(config);
     }

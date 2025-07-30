@@ -15,18 +15,20 @@ public class MessageDirector {
             .build();
     }
 
-    public SendMessage constructWordMessage(long chat, String master) {
+    public SendMessage constructWordMessage(long chat, String name, long id) {
         return SendMessage.builder()
             .chatId(chat)
-            .text(master + " explains the word")
+            .text("[" + escape(name) + "](tg://user?id=" + id + ") explains the word\\!")
+            .parseMode("MarkdownV2")
             .replyMarkup(createWordKeyboard())
             .build();
     }
 
-    public SendMessage constructWinMessage(long chat, String winner) {
+    public SendMessage constructWinMessage(long chat, String name, long id) {
         return SendMessage.builder()
             .chatId(chat)
-            .text(winner + " won")
+            .text("[" + escape(name) + "](tg://user?id=" + id + ") won\\!")
+            .parseMode("MarkdownV2")
             .replyMarkup(createWinKeyboard())
             .build();
     }
@@ -62,7 +64,7 @@ public class MessageDirector {
 
     private InlineKeyboardMarkup createWinKeyboard() {
         return InlineKeyboardMarkup.builder()
-            .keyboardRow(createRowButton("Claim", "claim-callback"))
+            .keyboardRow(createRowButton("Claim \uD83D\uDD90️", "claim-callback"))
             .build();
     }
 
@@ -73,5 +75,9 @@ public class MessageDirector {
                 .callbackData(callback)
                 .build()
         );
+    }
+
+    private String escape(String text) {
+        return text.replaceAll("([_*\\[\\]()~`>#+\\-=|{}.!])", "\\\\$1");
     }
 }

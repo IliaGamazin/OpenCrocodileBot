@@ -28,7 +28,7 @@ public class RunController implements Controller {
         proxy.wrap(conf -> {
             Update update = config.update();
             long chat = config.chat();
-            User master = update.getMessage().getFrom();
+            User from = update.getMessage().getFrom();
 
             MessageDirector director = new MessageDirector();
 
@@ -36,9 +36,8 @@ public class RunController implements Controller {
                 throw new ValidationException("Game is already started!");
             }
 
-            games.start(chat, master.getId(), config.session().language());
-
-            SendMessage message = director.constructWordMessage(chat, master.getFirstName());
+            games.start(chat, from.getId(), config.session().language());
+            SendMessage message = director.constructWordMessage(chat, from.getFirstName(), from.getId());
             client.execute(message);
         }).handle(config);
     }
