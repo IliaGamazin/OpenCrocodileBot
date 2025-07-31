@@ -5,6 +5,7 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
+import exceptions.ValidationException;
 import game.GameHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -28,6 +29,10 @@ public class GiveUpController implements Controller {
             Update update = config.update();
             User from = update.getMessage().getFrom();
             long chat = config.chat();
+
+            if (games.get(chat).isEmpty()) {
+                throw new ValidationException("Game is inactive!");
+            }
 
             games.end(chat);
 
