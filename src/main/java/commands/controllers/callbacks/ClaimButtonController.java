@@ -5,10 +5,12 @@ import bot.config.AuthedConfig;
 import commands.controllers.Controller;
 import commands.controllers.proxies.ControllerProxy;
 import exceptions.ControllerException;
+import exceptions.ValidationException;
 import game.GameHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
+import org.telegram.telegrambots.meta.api.objects.games.Game;
 import services.messages.MessageDirector;
 
 public class ClaimButtonController implements Controller {
@@ -28,6 +30,10 @@ public class ClaimButtonController implements Controller {
             Update update = config.update();
             User from = update.getCallbackQuery().getFrom();
             long chat = config.chat();
+
+            if (games.get(chat).isPresent()) {
+                throw new ValidationException("Game is already started!");
+            }
 
             MessageDirector director = new MessageDirector();
             SendMessage message = director.constructWordMessage(chat, from.getFirstName(), from.getId());

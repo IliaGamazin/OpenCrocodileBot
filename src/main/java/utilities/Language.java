@@ -7,14 +7,16 @@ public enum Language {
 
     private final String code;
     private final String title;
+    private final String unicode;
 
     Language(String code, String title, String unicode) {
         this.code = code;
         this.title = title;
+        this.unicode = unicode;
     }
 
     public String getUnicode() {
-        return code;
+        return unicode;
     }
 
     public String getTitle() {

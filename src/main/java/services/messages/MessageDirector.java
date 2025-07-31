@@ -50,7 +50,8 @@ public class MessageDirector {
     }
 
     public SendMessage constructErrorMessage(long chat, String message) {
-        return setDefaultBuilder(chat)
+        return SendMessage.builder()
+            .chatId(chat)
             .text(message)
             .build();
     }
