@@ -1,66 +1,65 @@
 package services.messages;
 
+import org.apache.commons.codec.language.bm.Lang;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import utilities.Language;
 
 import java.util.List;
 
 public class MessageDirector {
-    public SendMessage constructLanguageMessage(long chat) {
+    private SendMessage.SendMessageBuilder setDefaultBuilder(long chat) {
         return SendMessage.builder()
             .chatId(chat)
+            .parseMode("MarkdownV2");
+    }
+
+    public SendMessage constructLanguageMessage(long chat) {
+        return setDefaultBuilder(chat)
             .text("Choose the language:")
             .replyMarkup(createLanguageKeyboard())
             .build();
     }
 
     public SendMessage constructWordMessage(long chat, String name, long id) {
-        return SendMessage.builder()
-            .chatId(chat)
+        return setDefaultBuilder(chat)
             .text("[" + escape(name) + "](tg://user?id=" + id + ") explains the word\\! \uD83D\uDED6")
-            .parseMode("MarkdownV2")
             .replyMarkup(createWordKeyboard())
             .build();
     }
 
     public SendMessage constructLoseMessage(long chat, String name, long id) {
-        return SendMessage.builder()
-            .chatId(chat)
+        return setDefaultBuilder(chat)
             .text("[" + escape(name) + "](tg://user?id=" + id + ") lost :\\( \uD83E\uDD13")
-            .parseMode("MarkdownV2")
             .replyMarkup(createWinKeyboard())
             .build();
     }
 
     public SendMessage constructWinMessage(long chat, String name, long id) {
-        return SendMessage.builder()
-            .chatId(chat)
+        return setDefaultBuilder(chat)
             .text("[" + escape(name) + "](tg://user?id=" + id + ") won\\! \uD83C\uDF89")
-            .parseMode("MarkdownV2")
             .replyMarkup(createWinKeyboard())
             .build();
     }
 
     public SendMessage constructLanguageChangedMessage(long chat, String language) {
-        return SendMessage.builder()
-            .chatId(chat)
+        return setDefaultBuilder(chat)
             .text("Language changed to " + language)
             .build();
     }
 
     public SendMessage constructErrorMessage(long chat, String message) {
-        return SendMessage.builder()
-            .chatId(chat)
+        return setDefaultBuilder(chat)
             .text(message)
             .build();
     }
 
     private InlineKeyboardMarkup createLanguageKeyboard() {
         return InlineKeyboardMarkup.builder()
-            .keyboardRow(createRowButton("\uD83C\uDDEC\uD83C\uDDE7", "language-callback en"))
-            .keyboardRow(createRowButton("\uD83C\uDDF7\uD83C\uDDFA", "language-callback ru"))
-            .keyboardRow(createRowButton("\uD83C\uDDFA\uD83C\uDDE6", "language-callback ua"))
+            .keyboardRow(createRowButton(Language.ENGLISH.getUnicode(), "language-callback en"))
+            .keyboardRow(createRowButton(Language.RUSSIAN.getUnicode(), "language-callback ru"))
+            .keyboardRow(createRowButton(Language.UKRAINIAN.getUnicode(), "language-callback uk"))
             .build();
     }
 

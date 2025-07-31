@@ -1,40 +1,26 @@
 package commands.handlers;
 
 import commands.controllers.Controller;
-import commands.controllers.callbacks.ClaimButtonController;
-import commands.controllers.commands.GiveUpController;
 import commands.controllers.proxies.ControllerProxy;
-import commands.controllers.callbacks.LanguageButtonController;
-import commands.controllers.callbacks.NextButtonController;
-import commands.controllers.callbacks.SeeButtonController;
-import commands.controllers.commands.LanguageController;
-import commands.controllers.commands.MessageController;
-import commands.controllers.commands.RunController;
-import authentication.client.TelegramClient;
 import commands.controllers.proxies.ExceptionProxy;
-import game.GameHandler;
-import authentication.sessions.SessionHandler;
 
 import java.util.HashMap;
 import java.util.Optional;
 
-public class CommandHandler implements Handler{
+public class CommandHandler implements CommandRepo {
     private final HashMap<String, Controller> commands;
 
-    public CommandHandler(SessionHandler sessions, GameHandler games, TelegramClient client) {
+    public CommandHandler() {
         ControllerProxy proxy = new ExceptionProxy();
         commands = new HashMap<>();
-
-        commands.put("run", new RunController(client, games, proxy));
-        commands.put("give_up", new GiveUpController(client, games, proxy));
-        commands.put("language", new LanguageController(client, proxy));
-        commands.put("message", new MessageController(client, games, proxy));
-        commands.put("language-callback", new LanguageButtonController(sessions, client, proxy));
-        commands.put("see-callback", new SeeButtonController(client, games, proxy));
-        commands.put("next-callback", new NextButtonController(client, games, proxy));
-        commands.put("claim-callback", new ClaimButtonController(client, games, proxy));
     }
 
+    @Override
+    public void register(String command, Controller controller) {
+        commands.put(command, controller);
+    }
+
+    @Override
     public Optional<Controller> get(String command) {
         return Optional.ofNullable(commands.get(command));
     }

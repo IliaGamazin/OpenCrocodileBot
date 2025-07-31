@@ -1,19 +1,19 @@
 package utilities;
 
 public enum Language {
-    RUSSIAN ("ru", "Russian"),
-    ENGLISH ("en", "English"),
-    UKRAINIAN ("ua", "Ukrainian");
+    RUSSIAN ("ru", "Russian", "\uD83C\uDDEC\uD83C\uDDE7"),
+    ENGLISH ("en", "English", "\uD83C\uDDF7\uD83C\uDDFA"),
+    UKRAINIAN ("uk", "Ukrainian", "\uD83C\uDDFA\uD83C\uDDE6");
 
     private final String code;
     private final String title;
 
-    Language(String code, String title) {
+    Language(String code, String title, String unicode) {
         this.code = code;
         this.title = title;
     }
 
-    public String getCode() {
+    public String getUnicode() {
         return code;
     }
 

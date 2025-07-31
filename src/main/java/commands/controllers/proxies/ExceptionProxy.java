@@ -26,7 +26,7 @@ public class ExceptionProxy implements ControllerProxy {
                 throw new TelegramException("Telegram API failed", e);
             }
             catch (IOException | URISyntaxException e) {
-                throw new GameException("Service failed", e);
+                throw new GameException("Web service failed", e);
             }
             catch (Exception e) {
                 throw new ControllerException("Controller failed", e) ;

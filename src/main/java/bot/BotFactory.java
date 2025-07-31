@@ -5,11 +5,22 @@ import authentication.Authenticator;
 import bot.config.AuthedConfig;
 import bot.config.BotConfig;
 import bot.config.UnAuthedConfig;
+import commands.controllers.callbacks.ClaimButtonController;
+import commands.controllers.callbacks.LanguageButtonController;
+import commands.controllers.callbacks.NextButtonController;
+import commands.controllers.callbacks.SeeButtonController;
+import commands.controllers.commands.GiveUpController;
+import commands.controllers.commands.LanguageController;
+import commands.controllers.commands.MessageController;
+import commands.controllers.commands.RunController;
+import commands.controllers.proxies.ControllerProxy;
+import commands.controllers.proxies.ExceptionProxy;
 import commands.middleware.*;
 import authentication.client.TelegramBotClient;
 import commands.handlers.CommandHandler;
-import commands.handlers.Handler;
+import commands.handlers.CommandRepo;
 import exceptions.PipelineException;
+import jdk.javadoc.doclet.Reporter;
 import routers.Router;
 import routers.UpdateRouter;
 import authentication.client.TelegramClient;
@@ -33,7 +44,7 @@ public class BotFactory {
         SessionHandler sessions = new SessionHandler();
         GameHandler games = new GameHandler(provider);
 
-        Handler handler = new CommandHandler(sessions, games, client);
+        CommandRepo handler = getRepo(client, games, sessions);
         Parser parser = new UniversalParser(name);
 
         Pipeline pipeline = getPipeline(client, sessions);
@@ -43,9 +54,6 @@ public class BotFactory {
         BotConfig config = new BotConfig(
                 token,
                 name,
-                parser,
-                client,
-                sessions,
                 router
         );
         CrocodileBot bot = new CrocodileBot(config);
@@ -54,7 +62,7 @@ public class BotFactory {
         return bot;
     }
 
-    private static Pipeline getPipeline(TelegramClient client, SessionHandler sessions) {
+    private Pipeline getPipeline(TelegramClient client, SessionHandler sessions) {
         List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = List.of(new ErrorHandler(client), new LoggerMiddleware());
         List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
 
@@ -64,5 +72,22 @@ public class BotFactory {
         AuthBridge bridge = new Authenticator(sessions);
 
         return new Pipeline(preAuthChain, postAuthChain, bridge);
+    }
+
+    private CommandRepo getRepo(TelegramClient client, GameHandler games, SessionHandler sessions) {
+        ControllerProxy proxy = new ExceptionProxy();
+        CommandRepo repo = new CommandHandler();
+
+        repo.register("run", new RunController(client, games, proxy));
+        repo.register("give_up", new GiveUpController(client, games, proxy));
+        repo.register("language", new LanguageController(client, proxy));
+        repo.register("message", new MessageController(client, games, proxy));
+
+        repo.register("language-callback", new LanguageButtonController(sessions, client, proxy));
+        repo.register("see-callback", new SeeButtonController(client, games, proxy));
+        repo.register("next-callback", new NextButtonController(client, games, proxy));
+        repo.register("claim-callback", new ClaimButtonController(client, games, proxy));
+
+        return repo;
     }
 }

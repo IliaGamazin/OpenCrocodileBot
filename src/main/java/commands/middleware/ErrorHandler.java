@@ -24,7 +24,7 @@ public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineExceptio
             try {
                 next.accept(config);
             }
-            catch (ValidationException | GameException e) {
+            catch (ControllerException e) {
                 if (config.update().hasCallbackQuery()) {
                     String query = config.update().getCallbackQuery().getId();
                     AnswerCallbackQuery answer = answers.constructError(query, e.getMessage());

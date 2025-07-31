@@ -8,8 +8,5 @@ import authentication.sessions.SessionHandler;
 public record BotConfig (
         String token,
         String name,
-        Parser parser,
-        TelegramClient client,
-        SessionHandler sessions,
         Router router
 ) { }
