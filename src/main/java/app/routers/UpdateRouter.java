@@ -23,11 +23,7 @@ public class UpdateRouter implements Router{
 
     public void route(Update update) throws PipelineException {
         UnAuthedConfig config = parser.parse(update);
-
-        Controller controller = handler.get(config.action())
-                .or(() -> handler.get("message"))
-                .orElseThrow(()-> new PipelineException("Invalid command"));
-
+        Controller controller = handler.getOrDefault(config.action());
         pipeline.execute(config, controller);
     }
 }

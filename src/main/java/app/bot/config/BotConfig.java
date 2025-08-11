@@ -38,13 +38,11 @@ public class BotConfig {
                                    GameHandler games,
                                    SessionHandler sessions,
                                    ExceptionProxy proxy) {
-        CommandRepo repo = new CommandHandler();
+        CommandRepo repo = new CommandHandler(new MessageController(client, games, proxy));
 
         repo.register("run", new RunController(client, games, proxy));
         repo.register("give_up", new GiveUpController(client, games, proxy));
         repo.register("language", new LanguageController(client, proxy));
-        repo.register("message", new MessageController(client, games, proxy));
-
         repo.register("language-callback", new LanguageButtonController(sessions, client, proxy));
         repo.register("see-callback", new SeeButtonController(client, games, proxy));
         repo.register("next-callback", new NextButtonController(client, games, proxy));
