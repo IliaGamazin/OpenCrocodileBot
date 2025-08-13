@@ -1,6 +1,6 @@
 package app.commands.controllers.proxies;
 
-import app.commands.dto.AuthedConfig;
+import app.commands.dto.AuthedDTO;
 import app.commands.controllers.Controller;
 import app.commands.middleware.ThrowingConsumer;
 import app.exceptions.ControllerException;
@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 public class ExceptionProxy implements ControllerProxy {
 
     @Override
-    public Controller wrap(ThrowingConsumer<AuthedConfig, Exception> logic) {
+    public Controller wrap(ThrowingConsumer<AuthedDTO, Exception> logic) {
         return config -> {
             try {
                 logic.accept(config);

@@ -1,9 +1,11 @@
 package app.authentication;
 
-import app.authentication.sessions.Session;
-import app.authentication.sessions.SessionHandler;
-import app.commands.dto.UnAuthedConfig;
+import app.model.sessions.Session;
+import app.model.sessions.SessionHandler;
+import app.commands.dto.UnAuthedDTO;
+import jakarta.transaction.Transactional;
 
+@Transactional
 public class Authenticator implements AuthBridge{
     private final SessionHandler sessions;
 
@@ -12,7 +14,7 @@ public class Authenticator implements AuthBridge{
     }
 
     @Override
-    public Session authenticate(UnAuthedConfig config) {
+    public Session authenticate(UnAuthedDTO config) {
         return sessions.getOrCreate(config.chat());
     }
 }

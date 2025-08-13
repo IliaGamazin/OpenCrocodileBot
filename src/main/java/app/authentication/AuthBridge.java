@@ -1,9 +1,9 @@
 package app.authentication;
 
-import app.authentication.sessions.Session;
-import app.commands.dto.UnAuthedConfig;
+import app.model.sessions.Session;
+import app.commands.dto.UnAuthedDTO;
 
 @FunctionalInterface
 public interface AuthBridge {
-    Session authenticate(UnAuthedConfig config);
+    Session authenticate(UnAuthedDTO config);
 }

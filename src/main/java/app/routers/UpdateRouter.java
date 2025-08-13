@@ -1,6 +1,6 @@
 package app.routers;
 
-import app.commands.dto.UnAuthedConfig;
+import app.commands.dto.UnAuthedDTO;
 import app.commands.controllers.Controller;
 import app.commands.handlers.CommandRepo;
 import app.commands.middleware.Pipeline;
@@ -22,7 +22,7 @@ public class UpdateRouter implements Router{
     }
 
     public void route(Update update) throws PipelineException {
-        UnAuthedConfig config = parser.parse(update);
+        UnAuthedDTO config = parser.parse(update);
         Controller controller = handler.getOrDefault(config.action());
         pipeline.execute(config, controller);
     }

@@ -1,13 +1,13 @@
 package app.commands.middleware;
 
-import app.commands.dto.UnAuthedConfig;
+import app.commands.dto.UnAuthedDTO;
 import app.exceptions.PipelineException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-public class LoggerMiddleware implements Middleware<UnAuthedConfig, PipelineException>{
+public class LoggerMiddleware implements Middleware<UnAuthedDTO, PipelineException>{
     @Override
-    public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) throws PipelineException {
+    public void handle(UnAuthedDTO config, ThrowingConsumer<UnAuthedDTO, PipelineException> next) throws PipelineException {
         Update update = config.update();
 
         long chat = config.chat();

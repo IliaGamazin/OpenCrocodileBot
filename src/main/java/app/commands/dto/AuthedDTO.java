@@ -1,9 +1,9 @@
 package app.commands.dto;
 
-import app.authentication.sessions.Session;
+import app.model.sessions.Session;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public record AuthedConfig(
+public record AuthedDTO(
         String action,
         Update update,
         Session session,

@@ -1,12 +1,12 @@
 package app.commands.controllers.commands;
 
 import app.authentication.client.TelegramClient;
-import app.commands.dto.AuthedConfig;
+import app.commands.dto.AuthedDTO;
 import app.commands.controllers.Controller;
 import app.commands.controllers.proxies.ControllerProxy;
 import app.exceptions.ControllerException;
-import app.game.GameHandler;
-import app.game.GameState;
+import app.model.games.Game;
+import app.model.games.GameHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -26,21 +26,21 @@ public class MessageController implements Controller {
     }
 
     @Override
-    public void handle(AuthedConfig config) throws ControllerException {
+    public void handle(AuthedDTO config) throws ControllerException {
         proxy.wrap(conf -> {
             Update update = config.update();
             User from = update.getMessage().getFrom();
             long chat = config.chat();
 
-            Optional<GameState> gameOpt = games.get(config.chat());
+            Optional<Game> gameOpt = games.get(config.chat());
             if (gameOpt.isEmpty()) {
                 return;
             }
 
-            GameState game = gameOpt.get();
+            Game game = gameOpt.get();
 
-            if (game.word().equalsIgnoreCase(config.update().getMessage().getText())
-                && from.getId() != game.master()) {
+            if (game.getWord().equalsIgnoreCase(config.update().getMessage().getText())
+                && from.getId() != game.getMaster()) {
                 games.end(chat);
 
                 MessageDirector director = new MessageDirector();

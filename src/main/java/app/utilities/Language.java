@@ -1,8 +1,8 @@
 package app.utilities;
 
 public enum Language {
-    RUSSIAN ("ru", "Russian", "\uD83C\uDDEC\uD83C\uDDE7"),
-    ENGLISH ("en", "English", "\uD83C\uDDF7\uD83C\uDDFA"),
+    RUSSIAN ("ru", "Russian", "\uD83C\uDDF7\uD83C\uDDFA"),
+    ENGLISH ("en", "English", "\uD83C\uDDEC\uD83C\uDDE7"),
     UKRAINIAN ("uk", "Ukrainian", "\uD83C\uDDFA\uD83C\uDDE6");
 
     private final String code;

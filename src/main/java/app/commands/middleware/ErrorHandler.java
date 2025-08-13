@@ -1,7 +1,7 @@
 package app.commands.middleware;
 
 import app.authentication.client.TelegramClient;
-import app.commands.dto.UnAuthedConfig;
+import app.commands.dto.UnAuthedDTO;
 import app.exceptions.ControllerException;
 import app.exceptions.PipelineException;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import app.services.messages.AnswerDirector;
 import app.services.messages.MessageDirector;
 
-public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineException> {
+public class ErrorHandler implements Middleware<UnAuthedDTO, PipelineException> {
     private final TelegramClient client;
 
     public ErrorHandler(TelegramClient client) {
@@ -18,7 +18,7 @@ public class ErrorHandler implements Middleware<UnAuthedConfig, PipelineExceptio
     }
 
     @Override
-    public void handle(UnAuthedConfig config, ThrowingConsumer<UnAuthedConfig, PipelineException> next) throws PipelineException {
+    public void handle(UnAuthedDTO config, ThrowingConsumer<UnAuthedDTO, PipelineException> next) throws PipelineException {
         AnswerDirector answers = new AnswerDirector();
         MessageDirector messages = new MessageDirector();
         try {

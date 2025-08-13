@@ -23,7 +23,6 @@ public class CrocodileBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update)  {
         try {
-            System.out.println("bot received update");
             router.route(update);
         }
         catch (PipelineException e) {

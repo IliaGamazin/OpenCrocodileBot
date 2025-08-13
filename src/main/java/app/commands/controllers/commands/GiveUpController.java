@@ -1,12 +1,12 @@
 package app.commands.controllers.commands;
 
 import app.authentication.client.TelegramClient;
-import app.commands.dto.AuthedConfig;
+import app.commands.dto.AuthedDTO;
 import app.commands.controllers.Controller;
 import app.commands.controllers.proxies.ControllerProxy;
 import app.exceptions.ControllerException;
 import app.exceptions.ValidationException;
-import app.game.GameHandler;
+import app.model.games.GameHandler;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -24,7 +24,7 @@ public class GiveUpController implements Controller {
     }
 
     @Override
-    public void handle(AuthedConfig config) throws ControllerException {
+    public void handle(AuthedDTO config) throws ControllerException {
         proxy.wrap(conf -> {
             Update update = config.update();
             User from = update.getMessage().getFrom();

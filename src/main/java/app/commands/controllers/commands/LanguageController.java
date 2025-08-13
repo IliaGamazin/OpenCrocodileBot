@@ -1,7 +1,7 @@
 package app.commands.controllers.commands;
 
 import app.authentication.client.TelegramClient;
-import app.commands.dto.AuthedConfig;
+import app.commands.dto.AuthedDTO;
 import app.commands.controllers.Controller;
 import app.commands.controllers.proxies.ControllerProxy;
 import app.exceptions.ControllerException;
@@ -18,7 +18,7 @@ public class LanguageController implements Controller {
     }
 
     @Override
-    public void handle(AuthedConfig config) throws ControllerException {
+    public void handle(AuthedDTO config) throws ControllerException {
         proxy.wrap(conf -> {
             MessageDirector director = new MessageDirector();
             SendMessage message =  director.constructLanguageMessage(config.chat());

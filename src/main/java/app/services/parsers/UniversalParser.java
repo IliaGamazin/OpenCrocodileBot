@@ -1,6 +1,6 @@
 package app.services.parsers;
 
-import app.commands.dto.UnAuthedConfig;
+import app.commands.dto.UnAuthedDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,14 +15,14 @@ public class UniversalParser implements Parser{
     }
 
     @Override
-    public UnAuthedConfig parse(Update update) {
+    public UnAuthedDTO parse(Update update) {
         String input = update.hasMessage() ? update.getMessage().getText() :
                 update.getCallbackQuery().getData();
         long chat = update.hasMessage() ? update.getMessage().getChatId() :
                 update.getCallbackQuery().getMessage().getChatId();
 
         if (input == null || input.trim().isEmpty()) {
-            return new UnAuthedConfig("", update, new String[0], chat);
+            return new UnAuthedDTO("", update, new String[0], chat);
         }
 
         String cleaned = input.replaceFirst("^/", "")
@@ -35,6 +35,10 @@ public class UniversalParser implements Parser{
                 Arrays.copyOfRange(parts, 1, parts.length) :
                 new String[0];
 
-        return new UnAuthedConfig(action, update, args, chat);
+        if (args.length > 0) {
+            System.out.println(args[0] + " args");
+        }
+
+        return new UnAuthedDTO(action, update, args, chat);
     }
 }

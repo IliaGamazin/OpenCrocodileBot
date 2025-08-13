@@ -2,7 +2,7 @@ package app.bot.config;
 
 import app.authentication.*;
 import app.authentication.client.TelegramClient;
-import app.authentication.sessions.SessionHandler;
+import app.model.sessions.SessionHandler;
 import app.bot.CrocodileBot;
 import app.commands.controllers.callbacks.*;
 import app.commands.controllers.commands.*;
@@ -11,9 +11,8 @@ import app.commands.dto.*;
 import app.commands.handlers.*;
 import app.commands.middleware.*;
 import app.exceptions.PipelineException;
-import app.game.GameHandler;
+import app.model.games.GameHandler;
 import app.routers.Router;
-import app.services.randomword.WordProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,11 +52,11 @@ public class BotConfig {
 
     @Bean
     public Pipeline pipeline(TelegramClient client, SessionHandler sessions) {
-        List<Middleware<UnAuthedConfig, PipelineException>> preAuthMiddlewares = List.of(new ErrorHandler(client), new LoggerMiddleware());
-        List<Middleware<AuthedConfig, PipelineException>> postAuthMiddlewares = new ArrayList<>();
+        List<Middleware<UnAuthedDTO, PipelineException>> preAuthMiddlewares = List.of(new ErrorHandler(client), new LoggerMiddleware());
+        List<Middleware<AuthedDTO, PipelineException>> postAuthMiddlewares = new ArrayList<>();
 
-        MiddlewareChain<UnAuthedConfig, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
-        MiddlewareChain<AuthedConfig, PipelineException> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
+        MiddlewareChain<UnAuthedDTO, PipelineException> preAuthChain = new MiddlewareChain<>(preAuthMiddlewares);
+        MiddlewareChain<AuthedDTO, PipelineException> postAuthChain = new MiddlewareChain<>(postAuthMiddlewares);
 
         AuthBridge bridge = new Authenticator(sessions);
 
