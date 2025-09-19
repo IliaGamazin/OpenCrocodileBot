@@ -19,10 +19,17 @@ public class WiktionaryProvider implements WordProvider {
                 "https://en.wiktionary.org/wiki/Special:RandomInCategory/%s_lemmas",
                 language.getTitle()
         );
+        System.out.println(currentUrl);
         URI uri = new URI(currentUrl);
 
         for (int redirectCount = 0; redirectCount < 2; redirectCount++) {
             HttpsURLConnection connection = (HttpsURLConnection) uri.toURL().openConnection();
+
+            connection.setRequestProperty("User-Agent",
+                "OpenCrocodileBot/1.0 (https://github.com/IliaGamazin/OpenCrocodileBot)");
+            connection.setRequestProperty("Accept",
+                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
             connection.setInstanceFollowRedirects(false);
 
